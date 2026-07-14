@@ -3,16 +3,9 @@ import './App.css'
 import myPicture from './assets/picture.png' // Impor foto aslimu dengan aman
 
 function App() {
-  const [copied, setCopied] = useState(false)
   const [profileImg, setProfileImg] = useState<string>(myPicture)
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const handleCopyPhone = () => {
-    navigator.clipboard.writeText("+6289517111527")
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
 
   // Fungsi drop gambar interaktif jika ingin ganti gambar lewat browser langsung
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
