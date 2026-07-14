@@ -1,184 +1,564 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
+:root {
+  /* Diubah ke tema Putih Bersih (Light Mode) */
+  --bg-dark: #feebf0;            /* Background utama putih bersih */
+  --bg-card: #fef1f7;             /* Background card abu-abu sangat terang (slate-50) */
+  --accent: #c60663;              /* Warna aksen Sky Blue yang kontras (sky-600) */
+  --accent-hover: #f3e8ef;        /* Warna aksen saat hover (sky-700) */
+  --text-main: #0f172a;           /* Teks utama gelap (slate-900) agar mudah dibaca */
+  --text-muted: #898287;          /* Teks sekunder (slate-500) */
+  --border-color: #964b67;        /* Garis pembatas tipis abu-abu (slate-200) */
+}
+
+html {
+  scroll-behavior: smooth; /* Membuat efek scroll halus saat link navbar diklik */
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  /* Memanggil font Poppins yang sudah di-load di index.html */
+  font-family: 'Poppins', sans-serif !important; 
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar Style */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 65px;
+  background-color: #d9879d;; /* Semi-transparan putih */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1000;
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
   color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
 }
 
-.hero {
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.80rem;
+  font-weight: 600; /* Sedikit lebih tebal untuk estetika di atas putih */
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+/* Base Layout */
+.portfolio-container {
+  background-color: #feebf0; /* Semi-transparan putih */
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 10px 1.5rem 0 1.5rem; /* Tambah padding-top agar tidak tertutup navbar */
+}
+
+.section-padding {
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--accent);
   position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+  font-weight: 700;
 }
 
-#center {
+/* ==========================================
+   STYLING FOTO PROFIL & AVATAR 
+   ========================================== */
+
+/* Wadah Lingkaran Avatar */
+.profile-image-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 1.5rem auto;
+  border-radius: 50%;
+  border: 4px solid var(--border-color);
+  overflow: hidden;
+  cursor: pointer;
+  background-color: var(--bg-card);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); /* Bayangan lebih halus di background putih */
+}
+
+.profile-image-container:hover {
+  border-color: var(--accent);
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(2, 132, 199, 0.2);
+}
+
+/* Ketika file ditarik ke atas lingkaran */
+.profile-image-container.drag-active {
+  border-color: var(--accent);
+  animation: pulse-border 1.5s infinite;
+}
+
+/* Gambar di dalam lingkaran */
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Menjaga foto proporsional & tidak gepeng */
+  object-position: center top; /* Memfokuskan potongan gambar pada wajah */
+  transition: filter 0.3s ease;
+}
+
+/* Efek Hover / Overlay "Ganti Foto" */
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.9); /* Overlay semi transparan putih */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-align: center;
+}
+
+.avatar-overlay span {
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 0 0.5rem;
+}
+
+.profile-image-container:hover .avatar-overlay {
+  opacity: 1;
+}
+
+/* Animasi untuk efek Dragging */
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(2, 132, 199, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
+}
+
+/* Hero Section */
+.hero-content {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* Nama dan gelar cover */
+.name-title { 
+  font-size: 3rem;
+  margin: 1rem;
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0.5rem 0;
+  font-weight: 500;
+}
+
+.location {
+  color: var(--accent);
+  font-size: 0.80rem;
+  font-weight: 600;
+}
+
+.contact-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.btn-contact {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 1.1rem;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.70rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-contact:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: rgba(250, 156, 219, 0.05);
+}
+
+.summary-box {
+  background-color: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 3px;
+  border: 1px solid var(--border-color);
+  text-align: justify;
+  line-height: 1.6;
+  font-size: 0.80rem;
+  color: #334155; /* Abu-abu gelap (slate-700) agar mudah dibaca di latar putih */
+}
+
+.summary-box p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.summary-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* Education */
+.timeline, .card-list {
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  gap: 1.2rem;
+  font-size: 0.80rem;
+  text-align: justify;
+  line-height: 1.2;
 }
 
-#next-steps {
+.timeline-item, .experience-card {
+  background-color: var(--bg-card);
+  padding: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+/* Education */
+.time-header, .card-header {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
 
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
+/* Education */
+.time-header h3, .card-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* Education */
+.location-tag {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 0.80rem;
+}
+
+/* Education */
+.date-tag {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 0px solid var(--accent);
+  color: var(--accent);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.80rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Memberikan jarak renggang yang pas antara Timeline dan Project */
+.education-projects-section {
+  margin-top: 1.2rem; 
+  
+}
+
+/* Gaya tulisan sub-judul project */
+.subsection-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.bullet-points li {
+  font-size: 0.70rem;
+  text-align: justify;
+  color: #475569; /* Warna abu-abu slate agar teks kecil tetap nyaman dibaca */
+  line-height: 1.4; /* Jarak antar baris agar tidak terlalu rapat */
+  margin-bottom: 0.4rem; /* Jarak antar poin list */
+  padding-right: 1rem;
+}
+/* Internship Experience */
+.role-title {
+  margin: 0.2rem 0 0 0;
+  color: var(--text-muted);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Internship Experience */
+.degree {
+  margin: 0;
+  color: #1e293b; /* slate-800 */
+  font-weight: 500;
+}
+
+.bullet-points {
+  margin: 0;
+  padding-left: 1rem;
+  color: #334155; /* slate-700 */
+  line-height: 1.6;
+}
+
+.bullet-points li {
+  margin-bottom: 0.5rem;
+}
+
+/* Certificates Layout */
+.certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+  text-align: center;
+}
+
+.cert-card {
+  background-color: var(--bg-card);
+  padding: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-highlight {
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.05);
+  background-color: rgba(2, 132, 199, 0.01);
+}
+
+.cert-date {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.cert-card h3 {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.issuer {
+  margin: 0 0 0.8rem 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.desc {
+  margin: 0;
+  font-size: 0.70rem;
+  line-height: 1.4;
+  color: #475569; /* slate-600 */
+}
+
+/* Skills Layout */
+.skills-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.skills-group h3 {
+  margin: 0 0 0.8rem 0;
+  font-size: 1.1rem;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.tag {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #334155; /* slate-700 */
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: rgba(2, 132, 199, 0.05);
+}
+
+footer {
+  text-align: center;
+  padding: 2.5rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Responsive design untuk Mobile */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 0 1rem;
   }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
+  .nav-links {
+    gap: 0.8rem;
   }
-
-  @media (max-width: 1024px) {
+  .nav-links a {
+    font-size: 0.8rem;
+  }
+  .time-header, .card-header {
     flex-direction: column;
-    text-align: center;
+  }
+  .date-tag {
+    margin-top: 0.3rem;
+  }
+  .name-title {
+    font-size: 2.2rem;
   }
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
+/* Container tombol dibuat rapat dan rapi */
+.contact-buttons {
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 1.5rem 0;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+.btn-contact-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  padding: 0;
 }
 
-.ticks {
-  position: relative;
-  width: 100%;
+/* Efek saat logo di-hover */
+.btn-contact-icon:hover {
+  border-color: var(--accent);
+  background-color: rgba(2, 132, 199, 0.05);
+  transform: translateY(-2px);
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+/* Memastikan gambar logo SVG responsif di tengah */
+.btn-contact-icon img {
+  display: block;
+  transition: transform 0.2s ease;
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
+.btn-contact-icon:hover img {
+  transform: scale(1.1); /* Logo membesar sedikit saat di-hover */
+}
+
+/* Gaya teks centang sukses */
+.text-success {
+  color: #22c55e;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Efek hover dinamis sesuai warna asli masing-masing brand */
+.btn-gmail:hover {
+  border-color: #ea4335; /* Merah Gmail */
+  background-color: rgba(234, 67, 53, 0.05);
+}
+
+.btn-linkedin:hover {
+  border-color: #0077b5; /* Biru LinkedIn */
+  background-color: rgba(0, 119, 181, 0.05);
+}
+
+.btn-whatsapp:hover {
+  border-color: #25d366; /* Hijau WhatsApp */
+  background-color: rgba(37, 211, 102, 0.05);
+}
+
+/* Membuat container ikon berjajar rapi secara responsif */
+.skills-icons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+/* Kotak pembungkus tiap satu logo skill */
+.skill-icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Ukuran logo SVG Devicon */
+.skill-icon-item img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+/* Teks label kecil di bawah logo */
+.skill-icon-item span {
+  font-size: 0.70rem;
+  font-weight: 500;
+  color: #475569;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Efek interaktif saat kursor mendekati kotak skill */
+.skill-icon-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.skill-icon-item:hover img {
+  transform: scale(1.1);
 }
