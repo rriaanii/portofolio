@@ -669,7 +669,7 @@ function App() {
               <img
                 src={profileImg}
                 alt="Maulika Fitriani Profile"
-                className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-105"
+                className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
               />
             </div>
             <div className="absolute right-1 bottom-1 flex h-10 w-10 items-center justify-center rounded-full border-4 border-ink-950 bg-mint text-slate-900">
