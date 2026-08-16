@@ -1,59 +1,94 @@
-import { useState, useRef } from 'react'
+import { useState, type MouseEvent } from 'react'
 import './App.css'
-import myPicture from './assets/picture.png' // Impor foto aslimu dengan aman
+import myPicture from './assets/picture.png'
 
 function App() {
-  const [profileImg, setProfileImg] = useState<string>(myPicture)
-  const [isDragOver, setIsDragOver] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [profileImg] = useState<string>(myPicture)
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false)
 
-  // Fungsi drop gambar interaktif jika ingin ganti gambar lewat browser langsung
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragOver(false)
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const file = e.dataTransfer.files[0]
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader()
-        reader.onload = (event) => {
-          if (event.target?.result) {
-            setProfileImg(event.target.result as string)
-          }
-        }
-        reader.readAsDataURL(file)
+  const educationPhotos = ['/wisuda.png', '/wisuda2.png']
+  const [currentEduSlide, setCurrentEduSlide] = useState(0)
+
+  const changeEduSlide = (direction: 'next' | 'prev') => {
+    setCurrentEduSlide((prev) => {
+      if (direction === 'next') {
+        return prev === educationPhotos.length - 1 ? 0 : prev + 1
       }
-    }
+
+      return prev === 0 ? educationPhotos.length - 1 : prev - 1
+    })
   }
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragOver(true)
+  const nextEduSlide = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    changeEduSlide('next')
   }
 
-  const handleDragLeave = () => {
-    setIsDragOver(false)
+  const prevEduSlide = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    changeEduSlide('prev')
   }
 
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click()
-  }
+  const openImageModal = () => setIsImageModalOpen(true)
+  const closeImageModal = () => setIsImageModalOpen(false)
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0]
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setProfileImg(event.target.result as string)
-        }
-      }
-      reader.readAsDataURL(file)
-    }
-  }
+  const certificateData = [
+    {
+      id: 'bnsp',
+      title: 'BNSP Certification | Junior Network Administrator',
+      issuer: 'Computer Professional Certification Institution',
+      date: 'March 2021',
+      highlight: true,
+      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'merit',
+      title: 'Merit Award Scholarship',
+      issuer: 'Tenaris PT. Seamless Pipe Indonesia Jaya',
+      date: 'March 2021',
+      highlight: true,
+      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'project-management',
+      title: 'Project Management',
+      issuer: 'Dicoding Indonesia X Google Developers',
+      date: '18 Jan 2024',
+      highlight: false,
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'data-science',
+      title: 'Data Science Competency',
+      issuer: 'Dicoding Indonesia X Google Developers',
+      date: '4 Feb 2024',
+      highlight: false,
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'web-layouts',
+      title: 'Web Programming Layouts',
+      issuer: 'Dicoding X DBS Foundation Coding Camp',
+      date: '5 Feb 2024',
+      highlight: false,
+      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'sql',
+      title: 'Structured Query Language (SQL)',
+      issuer: 'Dicoding Indonesia X Google Developers',
+      date: '8 Feb 2024',
+      highlight: false,
+      image: 'https://images.unsplash.com/photo-1558494949cc5c4f48a4d0d9c9b8c95eb?auto=format&fit=crop&w=900&q=80',
+    },
+  ]
+
+  const [selectedCertificate, setSelectedCertificate] = useState<
+    (typeof certificateData)[number] | null
+  >(null)
 
   return (
     <div className="portfolio-container">
-      {/* Navigation Bar */}
       <nav className="navbar">
         <div className="nav-logo">MF.</div>
         <ul className="nav-links">
@@ -66,176 +101,136 @@ function App() {
         </ul>
       </nav>
 
-      {/* Hero / About Section */}
       <section id="about" className="section-padding">
         <div className="hero-content">
-          
-          {/* Bulatan Avatar Utama */}
-          <div 
-            className={`profile-image-container ${isDragOver ? 'drag-active' : ''}`}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onClick={handleAvatarClick}
-            title="Klik atau seret (drop) foto kamu di sini untuk mengganti gambar"
-          >
-            <img 
-              src={profileImg} 
-              className="profile-avatar" 
-              alt="Maulika Fitriani Profile" 
-            />
-            <div className="avatar-overlay">
-              <span>Ganti Foto <br/> (Drop di sini)</span>
-            </div>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange} 
-              accept="image/*" 
-              style={{ display: 'none' }} 
-            />
+          <div className="profile-image-container">
+            <img src={profileImg} className="profile-avatar" alt="Maulika Fitriani Profile" />
           </div>
 
           <h1 className="name-title">MAULIKA FITRIANI</h1>
-          <p className="subtitle">System Analyst | Frontend Developer | UI/UX Designer</p>
-          <p className="location">+8951 7111 527 | Bandung, West Java, 40256</p>
-          
+          <p className="subtitle">Business & System Analyst | Frontend Developer</p>
+          <p className="location">+62 895 1711 1527 | Bandung, West Java</p>
+
           <div className="contact-buttons">
-          {/* Tombol Gmail Resmi (Warna Merah Asli) */}
-            <a 
-              href="mailto:maulikafitriani@gmail.com" 
-              className="btn-contact-icon btn-gmail" 
-              title="Email Me"
-            >
-              <img 
-                src="https://unpkg.com/simple-icons@v13/icons/gmail.svg" 
-                alt="Gmail" 
-                width="20" 
-                height="20" 
-                style={{ filter: "invert(31%) sepia(94%) saturate(4505%) hue-rotate(350deg) brightness(95%) contrast(93%)" }}
-              />
+            <a href="mailto:maulikafitriani@gmail.com" className="btn-contact-icon btn-gmail" title="Email Me">
+              <img src="https://unpkg.com/simple-icons@v13/icons/gmail.svg" alt="Gmail" width="20" height="20" style={{ filter: 'invert(31%) sepia(94%) saturate(4505%) hue-rotate(350deg) brightness(95%) contrast(93%)' }} />
             </a>
-
-            {/* Tombol LinkedIn Resmi (Warna Biru Asli & Fix URL Terbaca) */}
-          <a 
-              href="https://www.linkedin.com/in/maulikafitriani" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="btn-contact-icon btn-linkedin" 
-              title="LinkedIn"
-            >
-              <img 
-                src="https://unpkg.com/simple-icons@v13/icons/linkedin.svg" 
-                alt="LinkedIn" 
-                width="20" 
-                height="20"
-                style={{ filter: "invert(29%) sepia(93%) saturate(1512%) hue-rotate(178deg) brightness(91%) contrast(101%)" }}
-              />
+            <a href="https://www.linkedin.com/in/maulikafitriani" target="_blank" rel="noreferrer" className="btn-contact-icon btn-linkedin" title="LinkedIn">
+              <img src="https://unpkg.com/simple-icons@v13/icons/linkedin.svg" alt="LinkedIn" width="20" height="20" style={{ filter: 'invert(29%) sepia(93%) saturate(1512%) hue-rotate(178deg) brightness(91%) contrast(101%)' }} />
             </a>
-
-            {/* Tombol Copy Phone (Warna Hijau WhatsApp Asli) */}
-          {/* Tombol WhatsApp Resmi (Warna Hijau Asli & Langsung Direct Chat) */}
-          <a 
-            href="https://wa.me/6289517111527" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="btn-contact-icon btn-whatsapp" 
-            title="Chat on WhatsApp"
-          >
-            <img 
-              src="https://unpkg.com/simple-icons@v13/icons/whatsapp.svg" 
-              alt="WhatsApp" 
-              width="20" 
-              height="20" 
-              style={{ filter: "invert(64%) sepia(50%) saturate(4649%) hue-rotate(113deg) brightness(97%) contrast(82%)" }}
-            />
-          </a>
+            <a href="https://wa.me/6289517111527" target="_blank" rel="noreferrer" className="btn-contact-icon btn-whatsapp" title="Chat on WhatsApp">
+              <img src="https://unpkg.com/simple-icons@v13/icons/whatsapp.svg" alt="WhatsApp" width="20" height="20" style={{ filter: 'invert(64%) sepia(50%) saturate(4649%) hue-rotate(113deg) brightness(97%) contrast(82%)' }} />
+            </a>
           </div>
 
           <div className="summary-box">
             <p>
-              An Information Systems Associate graduate and current online Bachelor’s in Informatics student at Telkom University (GPA 3.80/4.00), combining over a year of corporate IT internship experience with a BNSP Junior Network Administrator certification. Demonstrates a versatile technical skill set spanning System Analysis, Frontend Development, UI/UX Design, and Data Science. 
-              <br>
-              </br>
+              Information Systems Associate graduate and current online Bachelor’s in Informatics student at Telkom University (GPA 3.80/4.00), combining over a year of corporate IT experience with a BNSP Junior Network Administrator certification. Experienced in leading the full Software Development Life Cycle (SDLC) as a System Analyst, Software Engineer, and Frontend Developer—from requirement gathering and process mapping using Agile/Waterfall to hands-on engineering with React.js, Next.js, and TypeScript.
             </p>
             <p>
-              Possesses a proven track record of translating complex business requirements into functional digital solutions through cross-functional collaboration. Highly motivated to leverage this multidisciplinary academic foundation and hands-on corporate tech experience to bridge the gap between complex business strategies and modern engineering frameworks, actively contributing to impactful digital transformations and the development of scalable, user-centric software solutions.
+              Proven track record in digitalizing enterprise supply chain and finance systems for major automotive suppliers while delivering responsive UI/UX architectures. Passionate about bridging business strategy with modern software development to build scalable, high-performance, and user-centric digital solutions.
             </p>
           </div>
         </div>
       </section>
 
-{/* Education Section */}
+      {isImageModalOpen && (
+        <div className="image-modal-overlay" onClick={closeImageModal}>
+          <div className="image-modal-content" onClick={(event) => event.stopPropagation()}>
+            <button className="image-modal-close" onClick={closeImageModal} aria-label="Close image">×</button>
+            <img src={educationPhotos[currentEduSlide]} alt={`Education Photo ${currentEduSlide + 1}`} className="image-modal-image" />
+          </div>
+        </div>
+      )}
+
       <section id="education" className="section-padding">
         <h2 className="section-title">Education</h2>
+
+        <div className="education-container">
+          <div className="edu-photo-wrapper">
+            <div className="edu-slider-container">
+              <div className="slider-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <span>Click to enlarge</span>
+              </div>
+
+              <img src={educationPhotos[currentEduSlide]} alt={`Education Photo ${currentEduSlide + 1}`} className="edu-photo" onClick={openImageModal} />
+
+              {educationPhotos.length > 1 && (
+                <>
+                  <button className="slider-btn prev-btn" onClick={prevEduSlide} aria-label="Previous Photo">&#10094;</button>
+                  <button className="slider-btn next-btn" onClick={nextEduSlide} aria-label="Next Photo">&#10095;</button>
+                </>
+              )}
+
+              {educationPhotos.length > 1 && (
+                <div className="slider-counter">{currentEduSlide + 1}/{educationPhotos.length}</div>
+              )}
+            </div>
+          </div>
+
+          <div className="timeline">
+            <div className="timeline-item">
+              <div className="time-header">
+                <h3>Telkom University <span className="location-tag">| Bandung, Indonesia</span></h3>
+                <span className="date-tag">Aug 2025 – Present</span>
+              </div>
+              <p className="degree">• Bachelor’s Degree (Extension) in Informatics PJJ (Online Learning)</p>
+            </div>
+
+            <div className="timeline-item">
+              <div className="time-header">
+                <h3>Telkom University <span className="location-tag">| Bandung, Indonesia</span></h3>
+                <span className="date-tag">Aug 2022 - 2025</span>
+              </div>
+              <p className="degree">• Associate Degree (A.Md. Kom.) in Information System | <strong>GPA 3.80 / 4.00</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div className="education-projects-section">
+          <h2 className="subsection-title">Projects</h2>
+          <div className="project-cards-grid">
+            <div className="project-card">
+              <span className="project-date">Feb 2024 - June 2024</span>
+              <h3>Mobile-based Scholarship Application</h3>
+              <p className="project-role">Programmer Fullstack Developer & Quality Assurance</p>
+              <ul className="bullet-points">
+                <li><p>Developed front-end using Flutter and Back-end using PHP.</p></li>
+                <li>Collaborated with designers and developers</li>
+              </ul>
+            </div>
+
+            <div className="project-card">
+              <span className="project-date">Oct 2023 - Dec 2023</span>
+              <h3>SatuSisi Coffee Web Application</h3>
+              <p className="project-role">Programmer Fullstack Developer & System Analyst</p>
+              <ul className="bullet-points">
+                <li>Analyzted business needs, developed user-friendly website</li>
+                <li>Built front-end with PHP and Back-end with HTML CSS</li>
+              </ul>
+            </div>
+
+            <div className="project-card">
+              <span className="project-date">Feb 2023 - June 2023</span>
+              <h3>Web-based Cryptocurrency Application</h3>
+              <p className="project-role">Programmer Fullstack Developer</p>
+              <ul className="bullet-points">
+                <li>Created application using HTML CSS and JavaScript with RESTAPIs integration</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="internships" className="section-padding">
+        <h2 className="section-title">Internship Experience</h2>
         <div className="timeline">
           <div className="timeline-item">
             <div className="time-header">
-              <h3>Telkom University <span className="location-tag">| Bandung, Indonesia</span></h3>
-              <span className="date-tag">Aug 2025 – Present</span>
-            </div>
-            <p className="degree">• Bachelor’s Degree (Extension) in Informatics PJJ (Online Learning)</p>
-          </div>
-
-          <div className="timeline-item">
-            <div className="time-header">
-              <h3>Telkom University <span className="location-tag">| Bandung, Indonesia</span></h3>
-              <span className="date-tag">Aug 2022 - 2025</span>
-            </div>
-            <p className="degree">• Associate Degree (A.Md. Kom.) in Information System | <strong>GPA 3.80 / 4.00</strong></p>
-          </div>
-        </div>
-        
-        {/* Education PROJECT */}
-        <div className="education-projects-section">
-          <h2 className="subsection-title">Projects</h2>
-          <div className="certificates-grid">
-            <div className="cert-card">
-              <span className="cert-date">Feb 2024 - June 2024</span>
-              <h3>Mobile-based Scholarship Application</h3>
-              <p className="issuer" style={{ fontSize: "0.80rem", color: "#64748b" }}>
-                Programmer Fullstack Developer & Quality Assurance
-              </p>              
-              <ul className="bullet-points">
-              <li><p>Developed front-end using Flutter and Back-end using PHP.</p> </li>
-              <li>Collaborated with designers and developers</li>
-              </ul>
-            </div>
-
-            <div className="cert-card">
-              <span className="cert-date">Oct 2023 - Dec 2023</span>
-              <h3>SatuSisi Coffee Web Application</h3>
-              <p className="issuer" style={{ fontSize: "0.80rem", color: "#64748b" }}>
-                Programmer Fullstack Developer & System Analyst
-              </p>              
-              <ul className="bullet-points">
-              <li>Analyzted business needs, developed user-friendly website</li>
-              <li>Built front-end with PHP and Back-end with HTML CSS</li>
-              </ul>
-            </div>
-
-            <div className="cert-card">
-              <span className="cert-date">Feb 2023 - June 2023</span>
-              <h3>Web-based Cryptocurrency Application</h3>
-              <p className="issuer" style={{ fontSize: "0.80rem", color: "#64748b" }}>
-                Programmer Fullstack Developer
-              </p>              
-              <ul className="bullet-points">
-              <li>Created application using HTML CSS and JavaScript with RESTAPIs integration</li>
-              </ul>
-            </div>
-
-          </div> {/* <--- Tambah Penutup untuk certificates-grid */}
-        </div> {/* <--- Tambah Penutup untuk education-projects-section */}
-      </section>
-
-      {/* Internships Section */}
-      <section id="internships" className="section-padding">
-        <h2 className="section-title">Internship Experience</h2>
-        <div className="card-list">
-          
-          <div className="experience-card">
-            <div className="card-header">
               <div>
                 <h3>PT Sanoh Indonesia <span className="location-tag">| Cikarang, Indonesia</span></h3>
                 <p className="role-title">Business & System Analyst and Frontend Developer Intern</p>
@@ -249,8 +244,8 @@ function App() {
             </ul>
           </div>
 
-          <div className="experience-card">
-            <div className="card-header">
+          <div className="timeline-item">
+            <div className="time-header">
               <div>
                 <h3>GoPay Indonesia</h3>
                 <p className="role-title">Student Ambassador '23 - Content Creator</p>
@@ -263,8 +258,8 @@ function App() {
             </ul>
           </div>
 
-          <div className="experience-card">
-            <div className="card-header">
+          <div className="timeline-item">
+            <div className="time-header">
               <div>
                 <h3>PT Bank Pembangunan Daerah Banten Tbk</h3>
                 <p className="role-title">Loan Assistant Intern</p>
@@ -276,17 +271,14 @@ function App() {
               <li>Inputted cooperative credit file data systematically into the corporate bank system.</li>
             </ul>
           </div>
-
         </div>
       </section>
 
-      {/* Work Experience / Projects Section */}
       <section id="experience" className="section-padding">
         <h2 className="section-title">Academic & Project Experience</h2>
-        <div className="card-list">
-          
-          <div className="experience-card">
-            <div className="card-header">
+        <div className="timeline">
+          <div className="timeline-item">
+            <div className="time-header">
               <div>
                 <h3>Teaching Assistant Network Architecture</h3>
                 <p className="role-title">Class Practice Assistant Coordinator</p>
@@ -299,8 +291,8 @@ function App() {
             </ul>
           </div>
 
-          <div className="experience-card">
-            <div className="card-header">
+          <div className="timeline-item">
+            <div className="time-header">
               <div>
                 <h3>Pengabdian Masyarakat (Community Service)</h3>
                 <p className="role-title">Tourism Promotion Website Design Team</p>
@@ -312,208 +304,153 @@ function App() {
               <li>Designed a user-friendly and informative web layout to boost local village tourism.</li>
             </ul>
           </div>
-
         </div>
       </section>
 
-      {/* Licenses & Achievements Section */}
       <section id="licenses" className="section-padding">
         <h2 className="section-title">Certificates & Awards</h2>
-        
-        <div className="certificates-grid">
-          <div className="cert-card bg-highlight">
-            <span className="cert-date">March 2021</span>
-            <h3>BNSP Certification | Junior Network Administrator</h3>
-            <p className="issuer">Computer Professional Certification Institution</p>
-            <p className="desc">Completed certification in network and infrastructure competencies, including network design and configuration.</p>
+
+        <div className="certificate-groups">
+          <div className="certificate-category">
+            <div className="certificates-grid highlight-grid">
+              {certificateData.filter((certificate) => certificate.highlight).map((certificate) => (
+                <article key={certificate.id} className="cert-card bg-highlight">
+                  <div className="cert-card-visual">
+                    <button
+                      type="button"
+                      className="cert-photo-button"
+                      onClick={() => setSelectedCertificate(certificate)}
+                      aria-label={`View ${certificate.title}`}
+                    >
+                      <img src={certificate.image} alt={certificate.title} className="cert-photo" />
+                    </button>
+                    <button type="button" className="cert-nav cert-nav-left" aria-label="Previous certificate">‹</button>
+                    <button type="button" className="cert-nav cert-nav-right" aria-label="Next certificate">›</button>
+                    <span className="cert-card-counter">3/3</span>
+                  </div>
+                  <div className="cert-card-body">
+                    <span className="cert-date">{certificate.date}</span>
+                    <h3>{certificate.title}</h3>
+                    <p className="issuer">{certificate.issuer}</p>
+                    <p className="desc">
+                      {certificate.id === 'bnsp'
+                        ? 'Completed certification in network and infrastructure competencies, including network design and configuration.'
+                        : 'Received full Merit Award for outstanding and consistent academic excellence.'}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
 
-          <div className="cert-card">
-            <span className="cert-date">18 Jan 2024</span>
-            <h3>Project Management</h3>
-            <p className="issuer">Dicoding Indonesia X Google Developers</p>
-            <p className="desc">Learned project management fundamentals, including cycles, methodology, and organizational structures.</p>
-          </div>
-
-          <div className="cert-card">
-            <span className="cert-date">4 Feb 2024</span>
-            <h3>Data Science Competency</h3>
-            <p className="issuer">Dicoding Indonesia X Google Developers</p>
-            <p className="desc">Studied the basics of data science, data analysis, machine learning, and essential data tools.</p>
-          </div>
-
-          <div className="cert-card">
-            <span className="cert-date">5 Feb 2024</span>
-            <h3>Web Programming Layouts</h3>
-            <p className="issuer">Dicoding X DBS Foundation Coding Camp</p>
-            <p className="desc">Created final assignments applying semantic HTML techniques and highly responsive web layouts using CSS.</p>
-          </div>
-
-          <div className="cert-card">
-            <span className="cert-date">8 Feb 2024</span>
-            <h3>Structured Query Language (SQL)</h3>
-            <p className="issuer">Dicoding Indonesia X Google Developers</p>
-            <p className="desc">Learned to manage and query relational databases using basic and advanced SQL commands.</p>
-          </div>
-
-          <div className="cert-card bg-highlight">
-            <span className="cert-date">March 2021</span>
-            <h3>Merit Award Scholarship</h3>
-            <p className="issuer">Tenaris PT. Seamless Pipe Indonesia Jaya</p>
-            <p className="desc">Received full Merit Award for outstanding and consistent academic excellence.</p>
+          <div className="certificate-category">
+            <div className="certificates-grid basic-grid">
+              {certificateData.filter((certificate) => !certificate.highlight).map((certificate) => (
+                <article key={certificate.id} className="cert-card">
+                  <div className="cert-card-visual">
+                    <button
+                      type="button"
+                      className="cert-photo-button"
+                      onClick={() => setSelectedCertificate(certificate)}
+                      aria-label={`View ${certificate.title}`}
+                    >
+                      <img src={certificate.image} alt={certificate.title} className="cert-photo" />
+                    </button>
+                    <button type="button" className="cert-nav cert-nav-left" aria-label="Previous certificate">‹</button>
+                    <button type="button" className="cert-nav cert-nav-right" aria-label="Next certificate">›</button>
+                    <span className="cert-card-counter">3/3</span>
+                  </div>
+                  <div className="cert-card-body">
+                    <span className="cert-date">{certificate.date}</span>
+                    <h3>{certificate.title}</h3>
+                    <p className="issuer">{certificate.issuer}</p>
+                    <p className="desc">
+                      {certificate.id === 'project-management' && 'Learned project management fundamentals, including cycles, methodology, and organizational structures.'}
+                      {certificate.id === 'data-science' && 'Studied the basics of data science, data analysis, machine learning, and essential data tools.'}
+                      {certificate.id === 'web-layouts' && 'Created final assignments applying semantic HTML techniques and highly responsive web layouts using CSS.'}
+                      {certificate.id === 'sql' && 'Learned to manage and query relational databases using basic and advanced SQL commands.'}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-        <section id="skills" className="section-padding">
-          <h2 className="section-title">Technical & Soft Skills</h2>
-          <div className="skills-container">
-            
-            <div className="skills-group">
-              <h3>Languages</h3>
-              <div className="skills-icons-grid">
-                {/* Indonesian (Native) */}
-                <div className="skill-icon-item" title="Indonesian (Native)">
-                  <img 
-                    src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/comment-medical.svg" 
-                    alt="Indonesian" 
-                    style={{ filter: "invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)" }} 
-                  />
-                  <span>Indonesian</span>
-                </div>
+      <section id="skills" className="section-padding">
+        <h2 className="section-title">Technical & Soft Skills</h2>
 
-                {/* English (Intermediate) */}
-                <div className="skill-icon-item" title="English (Intermediate)">
-                  <img 
-                    src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/earth-americas.svg" 
-                    alt="English" 
-                    style={{ filter: "invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)" }} 
-                  />
-                  <span>English</span>
-                </div>
+        <div className="skills-container">
+          <div className="skills-group">
+            <h3>Languages</h3>
+            <div className="skills-icons-grid">
+              <div className="skill-icon-item" title="Indonesian (Native)" style={{ border: '1px solid transparent' }}>
+                <img src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/comment-medical.svg" alt="Indonesian" style={{ filter: 'invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)' }} />
+                <span>Indonesian</span>
+              </div>
+              <div className="skill-icon-item" title="English (Intermediate)" style={{ border: '1px solid transparent' }}>
+                <img src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/earth-americas.svg" alt="English" style={{ filter: 'invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)' }} />
+                <span>English</span>
               </div>
             </div>
+          </div>
 
-        <div className="skills-group">
-          <h3>Technical Skills</h3>
-          <div className="skills-icons-grid">
-            {/* Figma */}
-            <div className="skill-icon-item" title="UI/UX Design (Figma)">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" />
-              <span>Figma</span>
-            </div>
-
-            {/* HTML5 */}
-            <div className="skill-icon-item" title="HTML5">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" />
-              <span>HTML5</span>
-            </div>
-
-            {/* CSS3 */}
-            <div className="skill-icon-item" title="CSS3">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" />
-              <span>CSS3</span>
-            </div>
-
-            {/* JavaScript */}
-            <div className="skill-icon-item" title="JavaScript">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" />
-              <span>JavaScript</span>
-            </div>
-
-            {/* React.js */}
-            <div className="skill-icon-item" title="React.js">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React.js" />
-              <span>React.js</span>
-            </div>
-
-            {/* MySQL / SQL */}
-            <div className="skill-icon-item" title="Databases (SQL)">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL" />
-              <span>SQL</span>
-            </div>
-
-            {/* Python */}
-            <div className="skill-icon-item" title="Python">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" />
-              <span>Python</span>
-            </div>
-
-            {/* Business & System Analysis (Diwakili Ikon Lab/Sains Devicon) */}
-            <div className="skill-icon-item" title="Business & System Analysis">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/labview/labview-original.svg" alt="Analysis" />
-              <span>Analysis</span>
-            </div>
-
-            {/* Diagrams / Process (Diwakili Ikon Rencana/Arsitektur) */}
-            <div className="skill-icon-item" title="Use Cases, ERDs & Activity Diagrams">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-original.svg" alt="Diagrams" />
-              <span>Diagrams</span>
-            </div>
-
-            {/* Design Thinking (Diwakili Ikon Canva/Kreatif Devicon) */}
-            <div className="skill-icon-item" title="Design Thinking">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg" alt="Design Thinking" />
-              <span>Design Thinking</span>
+          <div className="skills-group">
+            <h3>Technical Skills</h3>
+            <div className="skills-icons-grid">
+              {[
+                ['Figma', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg', 'UI/UX Design (Figma)'],
+                ['HTML5', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', 'HTML5'],
+                ['CSS3', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', 'CSS3'],
+                ['JavaScript', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', 'JavaScript'],
+                ['React.js', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', 'React.js'],
+                ['SQL', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', 'Databases (SQL)'],
+                ['Python', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', 'Python'],
+                ['Analysis', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/labview/labview-original.svg', 'Business & System Analysis'],
+                ['Diagrams', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-original.svg', 'Use Cases, ERDs & Activity Diagrams'],
+                ['Design Thinking', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg', 'Design Thinking'],
+              ].map(([label, src, title]) => (
+                <div key={label} className="skill-icon-item" title={title} style={{ border: '1px solid transparent' }}>
+                  <img src={src} alt={label} />
+                  <span>{label}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-        <div className="skills-group">
-          <h3>Soft Skills</h3>
-          <div className="skills-icons-grid">
-            {/* Leadership */}
-            <div className="skill-icon-item" title="Leadership">
-              <img 
-                src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/crown.svg" 
-                alt="Leadership" 
-                style={{ filter: "invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)" }} 
-              />
-              <span>Leadership</span>
-            </div>
 
-            {/* Strategic Communication */}
-            <div className="skill-icon-item" title="Strategic Communication">
-              <img 
-                src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/comments.svg" 
-                alt="Communication" 
-                style={{ filter: "invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)" }}
-              />
-              <span>Communication</span>
-            </div>
-
-            {/* Cross-functional Collaboration */}
-            <div className="skill-icon-item" title="Cross-functional Collaboration">
-              <img 
-                src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/users-gear.svg" 
-                alt="Collaboration" 
-                style={{ filter: "invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)" }}
-              />
-              <span>Collaboration</span>
-            </div>
-
-            {/* Adaptability */}
-            <div className="skill-icon-item" title="Adaptability">
-              <img 
-                src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/arrows-spin.svg" 
-                alt="Adaptability" 
-                style={{ filter: "invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)" }}
-              />
-              <span>Adaptability</span>
-            </div>
-
-            {/* Problem Solving */}
-            <div className="skill-icon-item" title="Problem Solving">
-              <img 
-                src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/lightbulb.svg" 
-                alt="Problem Solving" 
-                style={{ filter: "invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)" }}
-              />
-              <span>Problem Solving</span>
+          <div className="skills-group">
+            <h3>Soft Skills</h3>
+            <div className="skills-icons-grid">
+              {[
+                ['Leadership', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/crown.svg', 'Leadership'],
+                ['Communication', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/comments.svg', 'Strategic Communication'],
+                ['Collaboration', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/users-gear.svg', 'Cross-functional Collaboration'],
+                ['Adaptability', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/arrows-spin.svg', 'Adaptability'],
+                ['Problem Solving', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/lightbulb.svg', 'Problem Solving'],
+              ].map(([label, src, title]) => (
+                <div key={label} className="skill-icon-item" title={title} style={{ border: '1px solid transparent' }}>
+                  <img src={src} alt={label} style={{ filter: 'invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)' }} />
+                  <span>{label}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
         </div>
       </section>
+
+      {selectedCertificate && (
+        <div className="image-modal-overlay" onClick={() => setSelectedCertificate(null)}>
+          <div className="image-modal-content cert-modal-content" onClick={(event) => event.stopPropagation()}>
+            <button className="image-modal-close" onClick={() => setSelectedCertificate(null)} aria-label="Close certificate">×</button>
+            <img src={selectedCertificate.image} alt={selectedCertificate.title} className="image-modal-image" />
+            <div className="cert-modal-caption">
+              <h3>{selectedCertificate.title}</h3>
+              <p>{selectedCertificate.issuer}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer>
         <p>© {new Date().getFullYear()} Maulika Fitriani. Powered by React + Vite.</p>
