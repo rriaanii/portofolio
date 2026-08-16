@@ -52,6 +52,8 @@ function App() {
       issuer: 'Computer Professional Certification Institution',
       date: 'March 2021',
       highlight: true,
+      description:
+        'Completed certification in network and infrastructure competencies, including network design and configuration.',
       image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
     },
     {
@@ -60,6 +62,7 @@ function App() {
       issuer: 'Tenaris PT. Seamless Pipe Indonesia Jaya',
       date: 'March 2021',
       highlight: true,
+      description: 'Received full Merit Award for outstanding and consistent academic excellence.',
       image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
     },
     {
@@ -68,6 +71,8 @@ function App() {
       issuer: 'Dicoding Indonesia X Google Developers',
       date: '18 Jan 2024',
       highlight: false,
+      description:
+        'Learned project management fundamentals, including cycles, methodology, and organizational structures.',
       image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
     },
     {
@@ -76,6 +81,8 @@ function App() {
       issuer: 'Dicoding Indonesia X Google Developers',
       date: '4 Feb 2024',
       highlight: false,
+      description:
+        'Studied the basics of data science, data analysis, machine learning, and essential data tools.',
       image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
     },
     {
@@ -84,6 +91,8 @@ function App() {
       issuer: 'Dicoding X DBS Foundation Coding Camp',
       date: '5 Feb 2024',
       highlight: false,
+      description:
+        'Created final assignments applying semantic HTML techniques and highly responsive web layouts using CSS.',
       image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80',
     },
     {
@@ -92,7 +101,89 @@ function App() {
       issuer: 'Dicoding Indonesia X Google Developers',
       date: '8 Feb 2024',
       highlight: false,
+      description:
+        'Learned to manage and query relational databases using basic and advanced SQL commands.',
       image: 'https://images.unsplash.com/photo-1558494949cc5c4f48a4d0d9c9b8c95eb?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'responsive-design',
+      title: 'Responsive Web Design',
+      issuer: 'freeCodeCamp',
+      date: '12 Mar 2024',
+      highlight: false,
+      description:
+        'Built responsive, mobile-first web layouts using modern CSS, Flexbox, and Grid systems.',
+      image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'ux-design',
+      title: 'Belajar Dasar UX Design',
+      issuer: 'Dicoding Indonesia',
+      date: '22 Mar 2024',
+      highlight: false,
+      description:
+        'Studied the UX design workflow from user research and empathy maps to wireframes and prototyping.',
+      image: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'python',
+      title: 'Python Programming Essentials',
+      issuer: 'Dicoding Indonesia',
+      date: '5 Apr 2024',
+      highlight: false,
+      description:
+        'Practiced Python fundamentals, including data structures, functions, and basic automation scripts.',
+      image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'scrum',
+      title: 'Professional Scrum Master I',
+      issuer: 'Scrum.org',
+      date: '18 May 2024',
+      highlight: false,
+      description:
+        'Applied the Scrum framework, sprint planning, and agile ceremonies to manage team delivery.',
+      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'google-analytics',
+      title: 'Google Analytics for Beginners',
+      issuer: 'Google Analytics Academy',
+      date: '2 Jun 2024',
+      highlight: false,
+      description:
+        'Learned to measure website traffic and user behavior to support data-driven business decisions.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'db-design',
+      title: 'Database Design & Modeling',
+      issuer: 'Udemy',
+      date: '14 Jul 2024',
+      highlight: false,
+      description:
+        'Designed normalized relational schemas and applied entity-relationship modeling for real-world cases.',
+      image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'figma',
+      title: 'UI Design with Figma',
+      issuer: 'Coursera',
+      date: '9 Aug 2024',
+      highlight: false,
+      description:
+        'Created high-fidelity UI mockups and interactive prototypes using design systems in Figma.',
+      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=900&q=80',
+    },
+    {
+      id: 'toefl',
+      title: 'TOEFL ITP Certification',
+      issuer: 'IIEF',
+      date: '23 Aug 2024',
+      highlight: false,
+      description:
+        'Demonstrated English proficiency in listening, structure, and written expression.',
+      image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80',
     },
   ]
 
@@ -436,17 +527,7 @@ function App() {
         </h3>
         <p className="mt-1 text-sm font-medium text-slate-400">{certificate.issuer}</p>
         <p className="mt-3 text-xs leading-relaxed text-slate-500">
-          {certificate.id === 'bnsp'
-            ? 'Completed certification in network and infrastructure competencies, including network design and configuration.'
-            : certificate.id === 'merit'
-              ? 'Received full Merit Award for outstanding and consistent academic excellence.'
-              : certificate.id === 'project-management'
-                ? 'Learned project management fundamentals, including cycles, methodology, and organizational structures.'
-                : certificate.id === 'data-science'
-                  ? 'Studied the basics of data science, data analysis, machine learning, and essential data tools.'
-                  : certificate.id === 'web-layouts'
-                    ? 'Created final assignments applying semantic HTML techniques and highly responsive web layouts using CSS.'
-                    : 'Learned to manage and query relational databases using basic and advanced SQL commands.'}
+          {certificate.description}
         </p>
       </div>
     </article>

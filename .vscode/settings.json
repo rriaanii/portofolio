@@ -1,0 +1,8 @@
+{
+  // Tailwind CSS v4 uses CSS-based config with at-rules (@theme, @apply, ...)
+  // that the built-in CSS validator does not recognize. Ignore unknown at-rules
+  // to avoid false-positive "Unknown at rule" warnings. For full IntelliSense,
+  // install the Tailwind CSS IntelliSense extension (see extensions.json).
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore"
+}
