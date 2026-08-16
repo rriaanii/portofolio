@@ -1,12 +1,12 @@
 import { useState, type MouseEvent } from 'react'
 import './App.css'
-import myPicture from './assets/picture.png'
+import myPicture from './assets/picturefix.png'
 
 function App() {
   const [profileImg] = useState<string>(myPicture)
   const [isImageModalOpen, setIsImageModalOpen] = useState(false)
 
-  const educationPhotos = ['/wisuda.png', '/wisuda2.png']
+  const educationPhotos = ['/wisuda.jpg', '/wisuda2.png']
   const [currentEduSlide, setCurrentEduSlide] = useState(0)
 
   const changeEduSlide = (direction: 'next' | 'prev') => {
@@ -86,6 +86,77 @@ function App() {
   const [selectedCertificate, setSelectedCertificate] = useState<
     (typeof certificateData)[number] | null
   >(null)
+
+  const internshipData = [
+    {
+      id: 'sanoh',
+      company: 'PT Sanoh Indonesia',
+      role: 'Business & System Analyst and Frontend Developer Intern',
+      date: 'July 2024 – July 2025',
+      location: 'Cikarang, Indonesia',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
+      details: [
+        'Finance Invoice Management Systems: Collaborated within the BA and Frontend teams to digitize and streamline corporate finance invoicing workflows.',
+        'Visitor Management Systems: Engineered intuitive frontend interfaces tailored for security, administrators, and visitors using tablet devices. Optimized check-in workflows for dynamic visit categories including Meetings, Contractors, and Warehouse Deliveries.',
+        'Supply Chain Management Systems: Analyzed business requirements across divisions to model system processes via Use Cases, Activity Diagrams, ERDs, and designed & coded print-ready, responsive HTML/CSS layouts for critical SCM documents (PO, DN, and Kanban Labels).',
+      ],
+    },
+    {
+      id: 'gopay',
+      company: 'GoPay Indonesia',
+      role: 'Student Ambassador \'23 - Content Creator',
+      date: 'Sept 2023 - Dec 2023',
+      location: 'Remote / Campus Engagement',
+      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+      details: [
+        'Marketed the GoPay brand by increasing awareness of GoPay facilities/services among student peers.',
+        'Developed a GoPay Strategy by helping to design and develop GoPay marketing plans based on an analysis of needs and constraints experienced by students.',
+      ],
+    },
+    {
+      id: 'bank-banten',
+      company: 'PT Bank Pembangunan Daerah Banten Tbk',
+      role: 'Loan Assistant Intern',
+      date: 'Oct 2019 - Dec 2019',
+      location: 'Banten, Indonesia',
+      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
+      details: [
+        'Prepared account journals, deposit bills, and savings book account stamps for credit reviews.',
+        'Inputted cooperative credit file data systematically into the corporate bank system.',
+      ],
+    },
+  ]
+
+  const [selectedInternship, setSelectedInternship] = useState<(typeof internshipData)[number] | null>(null)
+
+  const academicProjectData = [
+    {
+      id: 'teaching-assistant',
+      title: 'Teaching Assistant Network Architecture',
+      subtitle: 'Class Practice Assistant Coordinator',
+      date: 'March 2023 - May 2024',
+      location: 'Telkom University',
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
+      details: [
+        'Assisted lecturers in class practicum environments.',
+        'Explained complex technical materials and helped students understand network architecture concepts thoroughly.',
+      ],
+    },
+    {
+      id: 'community-service',
+      title: 'Pengabdian Masyarakat (Community Service)',
+      subtitle: 'Tourism Promotion Website Design Team',
+      date: 'Nov 2023 - Dec 2023',
+      location: 'Keseneng Village, Semarang',
+      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+      details: [
+        'Researched and analyzed the target audience and tourism potential of Keseneng Village, Semarang.',
+        'Designed a user-friendly and informative web layout to boost local village tourism.',
+      ],
+    },
+  ]
+
+  const [selectedAcademicProject, setSelectedAcademicProject] = useState<(typeof academicProjectData)[number] | null>(null)
 
   return (
     <div className="portfolio-container">
@@ -228,84 +299,115 @@ function App() {
 
       <section id="internships" className="section-padding">
         <h2 className="section-title">Internship Experience</h2>
-        <div className="timeline">
-          <div className="timeline-item">
-            <div className="time-header">
-              <div>
-                <h3>PT Sanoh Indonesia <span className="location-tag">| Cikarang, Indonesia</span></h3>
-                <p className="role-title">Business & System Analyst and Frontend Developer Intern</p>
-              </div>
-              <span className="date-tag">July 2024 – July 2025</span>
-            </div>
-            <ul className="bullet-points">
-              <li><strong>Finance Invoice Management Systems:</strong> Collaborated within the BA and Frontend teams to digitize and streamline corporate finance invoicing workflows.</li>
-              <li><strong>Visitor Management Systems:</strong> Engineered intuitive frontend interfaces tailored for security, administrators, and visitors using tablet devices. Optimized check-in workflows for dynamic visit categories including Meetings, Contractors, and Warehouse Deliveries.</li>
-              <li><strong>Supply Chain Management Systems:</strong> Analyzed business requirements across divisions to model system processes via Use Cases, Activity Diagrams, ERDs, and designed & coded print-ready, responsive HTML/CSS layouts for critical SCM documents (PO, DN, and Kanban Labels).</li>
-            </ul>
-          </div>
 
-          <div className="timeline-item">
-            <div className="time-header">
-              <div>
-                <h3>GoPay Indonesia</h3>
-                <p className="role-title">Student Ambassador '23 - Content Creator</p>
+        <div className="internship-grid">
+          {internshipData.map((internship) => (
+            <button
+              key={internship.id}
+              type="button"
+              className="internship-card"
+              onClick={() => setSelectedInternship(internship)}
+            >
+              <div className="internship-card-visual">
+                <img src={internship.image} alt={internship.company} className="internship-card-photo" />
               </div>
-              <span className="date-tag">Sept 2023 - Dec 2023</span>
-            </div>
-            <ul className="bullet-points">
-              <li>Marketed the GoPay brand by increasing awareness of GoPay facilities/services among student peers.</li>
-              <li>Developed a GoPay Strategy by helping to design and develop GoPay marketing plans based on an analysis of needs and constraints experienced by students.</li>
-            </ul>
-          </div>
 
-          <div className="timeline-item">
-            <div className="time-header">
-              <div>
-                <h3>PT Bank Pembangunan Daerah Banten Tbk</h3>
-                <p className="role-title">Loan Assistant Intern</p>
+              <div className="internship-card-body">
+                <span className="internship-card-date">{internship.date}</span>
+                <h3>{internship.company}</h3>
+                <p className="internship-card-role">{internship.role}</p>
+                <span className="internship-card-location">{internship.location}</span>
               </div>
-              <span className="date-tag">Oct 2019 - Dec 2019</span>
-            </div>
-            <ul className="bullet-points">
-              <li>Prepared account journals, deposit bills, and savings book account stamps for credit reviews.</li>
-              <li>Inputted cooperative credit file data systematically into the corporate bank system.</li>
-            </ul>
-          </div>
+
+              <span className="internship-card-hint">Click here</span>
+            </button>
+          ))}
         </div>
       </section>
+
+      {selectedInternship && (
+        <div className="internship-modal-overlay" onClick={() => setSelectedInternship(null)}>
+          <div className="internship-modal-content" onClick={(event) => event.stopPropagation()}>
+            <button className="internship-modal-close" onClick={() => setSelectedInternship(null)} aria-label="Close internship detail">×</button>
+
+            <div className="internship-modal-visual">
+              <img src={selectedInternship.image} alt={selectedInternship.company} className="internship-modal-image" />
+            </div>
+
+            <div className="internship-modal-text">
+              <p className="internship-modal-label">Internship Experience</p>
+              <h3>{selectedInternship.company}</h3>
+              <p className="internship-modal-role">{selectedInternship.role}</p>
+              <div className="internship-modal-meta">
+                <span>{selectedInternship.date}</span>
+                <span>{selectedInternship.location}</span>
+              </div>
+
+              <ul className="internship-detail-list">
+                {selectedInternship.details.map((detail) => (
+                  <li key={detail}>{detail}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
 
       <section id="experience" className="section-padding">
         <h2 className="section-title">Academic & Project Experience</h2>
-        <div className="timeline">
-          <div className="timeline-item">
-            <div className="time-header">
-              <div>
-                <h3>Teaching Assistant Network Architecture</h3>
-                <p className="role-title">Class Practice Assistant Coordinator</p>
-              </div>
-              <span className="date-tag">March 2023 - May 2024</span>
-            </div>
-            <ul className="bullet-points">
-              <li>Assisted lecturers in class practicum environments.</li>
-              <li>Explained complex technical materials and helped students understand network architecture concepts thoroughly.</li>
-            </ul>
-          </div>
 
-          <div className="timeline-item">
-            <div className="time-header">
-              <div>
-                <h3>Pengabdian Masyarakat (Community Service)</h3>
-                <p className="role-title">Tourism Promotion Website Design Team</p>
+        <div className="academic-project-grid">
+          {academicProjectData.map((experience) => (
+            <button
+              key={experience.id}
+              type="button"
+              className="internship-card"
+              onClick={() => setSelectedAcademicProject(experience)}
+            >
+              <div className="internship-card-visual">
+                <img src={experience.image} alt={experience.title} className="internship-card-photo" />
               </div>
-              <span className="date-tag">Nov 2023 - Dec 2023</span>
-            </div>
-            <ul className="bullet-points">
-              <li>Researched and analyzed the target audience and tourism potential of Keseneng Village, Semarang.</li>
-              <li>Designed a user-friendly and informative web layout to boost local village tourism.</li>
-            </ul>
-          </div>
+
+              <div className="internship-card-body">
+                <span className="internship-card-date">{experience.date}</span>
+                <h3>{experience.title}</h3>
+                <p className="internship-card-role">{experience.subtitle}</p>
+                <span className="internship-card-location">{experience.location}</span>
+              </div>
+
+              <span className="internship-card-hint">Click here</span>
+            </button>
+          ))}
         </div>
       </section>
+
+      {selectedAcademicProject && (
+        <div className="internship-modal-overlay" onClick={() => setSelectedAcademicProject(null)}>
+          <div className="internship-modal-content" onClick={(event) => event.stopPropagation()}>
+            <button className="internship-modal-close" onClick={() => setSelectedAcademicProject(null)} aria-label="Close academic experience detail">×</button>
+
+            <div className="internship-modal-visual">
+              <img src={selectedAcademicProject.image} alt={selectedAcademicProject.title} className="internship-modal-image" />
+            </div>
+
+            <div className="internship-modal-text">
+              <p className="internship-modal-label">Academic & Project Experience</p>
+              <h3>{selectedAcademicProject.title}</h3>
+              <p className="internship-modal-role">{selectedAcademicProject.subtitle}</p>
+              <div className="internship-modal-meta">
+                <span>{selectedAcademicProject.date}</span>
+                <span>{selectedAcademicProject.location}</span>
+              </div>
+
+              <ul className="internship-detail-list">
+                {selectedAcademicProject.details.map((detail) => (
+                  <li key={detail}>{detail}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
 
       <section id="licenses" className="section-padding">
         <h2 className="section-title">Certificates & Awards</h2>
