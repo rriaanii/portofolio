@@ -1,5 +1,19 @@
 import { useState, type MouseEvent } from 'react'
-import './App.css'
+import { SiGmail, SiWhatsapp } from 'react-icons/si'
+import { FaLinkedin } from 'react-icons/fa'
+import {
+  FaMagnifyingGlass,
+  FaChevronLeft,
+  FaChevronRight,
+  FaXmark,
+  FaLocationDot,
+  FaGraduationCap,
+  FaBriefcase,
+  FaAward,
+  FaLayerGroup,
+  FaArrowRight,
+  FaCircleCheck,
+} from 'react-icons/fa6'
 import myPicture from './assets/picturefix.png'
 
 function App() {
@@ -14,7 +28,6 @@ function App() {
       if (direction === 'next') {
         return prev === educationPhotos.length - 1 ? 0 : prev + 1
       }
-
       return prev === 0 ? educationPhotos.length - 1 : prev - 1
     })
   }
@@ -104,7 +117,7 @@ function App() {
     {
       id: 'gopay',
       company: 'GoPay Indonesia',
-      role: 'Student Ambassador \'23 - Content Creator',
+      role: "Student Ambassador '23 - Content Creator",
       date: 'Sept 2023 - Dec 2023',
       location: 'Remote / Campus Engagement',
       image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
@@ -158,349 +171,794 @@ function App() {
 
   const [selectedAcademicProject, setSelectedAcademicProject] = useState<(typeof academicProjectData)[number] | null>(null)
 
+  const educationProjects = [
+    {
+      date: 'Feb 2024 - June 2024',
+      title: 'Mobile-based Scholarship Application',
+      role: 'Programmer Fullstack Developer & Quality Assurance',
+      bullets: [
+        'Developed front-end using Flutter and Back-end using PHP.',
+        'Collaborated with designers and developers',
+      ],
+    },
+    {
+      date: 'Oct 2023 - Dec 2023',
+      title: 'SatuSisi Coffee Web Application',
+      role: 'Programmer Fullstack Developer & System Analyst',
+      bullets: [
+        'Analyzted business needs, developed user-friendly website',
+        'Built front-end with PHP and Back-end with HTML CSS',
+      ],
+    },
+    {
+      date: 'Feb 2023 - June 2023',
+      title: 'Web-based Cryptocurrency Application',
+      role: 'Programmer Fullstack Developer',
+      bullets: [
+        'Created application using HTML CSS and JavaScript with RESTAPIs integration',
+      ],
+    },
+  ]
+
+  const sectionHeader = (number: string, title: string, subtitle?: string) => (
+    <div className="mb-12 text-center">
+      <span className="font-mono text-xs font-semibold tracking-widest text-accent-soft uppercase">
+        {number}
+      </span>
+      <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+        {title}
+      </h2>
+      {subtitle && <p className="mt-3 text-sm text-slate-400">{subtitle}</p>}
+      <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-gradient-to-r from-accent via-purple-400 to-pink-400" />
+    </div>
+  )
+
+  const educationModal = isImageModalOpen ? (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-fade-in"
+      onClick={closeImageModal}
+    >
+      <div className="relative w-full max-w-4xl animate-scale-in" onClick={(event) => event.stopPropagation()}>
+        <button
+          className="absolute -top-3 -right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-ink-800 text-slate-300 transition hover:bg-accent hover:text-white"
+          onClick={closeImageModal}
+          aria-label="Close image"
+        >
+          <FaXmark className="h-5 w-5" />
+        </button>
+        <img
+          src={educationPhotos[currentEduSlide]}
+          alt={`Education Photo ${currentEduSlide + 1}`}
+          className="max-h-[80vh] w-full rounded-2xl object-contain shadow-2xl"
+        />
+        <div className="mt-3 text-center font-mono text-sm text-slate-400">
+          {currentEduSlide + 1} / {educationPhotos.length}
+        </div>
+      </div>
+    </div>
+  ) : null
+
+  const internshipModal = selectedInternship ? (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-fade-in"
+      onClick={() => setSelectedInternship(null)}
+    >
+      <div
+        className="relative flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-ink-900 shadow-glow-lg animate-scale-in"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white transition hover:bg-accent"
+          onClick={() => setSelectedInternship(null)}
+          aria-label="Close internship detail"
+        >
+          <FaXmark className="h-4 w-4" />
+        </button>
+
+        <div className="relative h-56 w-full shrink-0 sm:h-64">
+          <img
+            src={selectedInternship.image}
+            alt={selectedInternship.company}
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/30 to-transparent" />
+        </div>
+
+        <div className="overflow-y-auto p-6 sm:p-8">
+          <p className="font-mono text-xs font-semibold tracking-widest text-accent-soft uppercase">
+            Internship Experience
+          </p>
+          <h3 className="mt-2 font-display text-2xl font-bold text-white sm:text-3xl">
+            {selectedInternship.company}
+          </h3>
+          <p className="mt-1 text-sm text-slate-400">{selectedInternship.role}</p>
+
+          <div className="mt-4 flex flex-wrap gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent-light">
+              {selectedInternship.date}
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300">
+              <FaLocationDot className="h-3 w-3 text-coral" />
+              {selectedInternship.location}
+            </span>
+          </div>
+
+          <ul className="mt-6 space-y-3">
+            {selectedInternship.details.map((detail) => (
+              <li key={detail} className="flex gap-3 text-sm leading-relaxed text-slate-300">
+                <FaCircleCheck className="mt-1 h-4 w-4 shrink-0 text-mint" />
+                <span>{detail}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  ) : null
+
+  const academicModal = selectedAcademicProject ? (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-fade-in"
+      onClick={() => setSelectedAcademicProject(null)}
+    >
+      <div
+        className="relative flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-ink-900 shadow-glow-lg animate-scale-in"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white transition hover:bg-accent"
+          onClick={() => setSelectedAcademicProject(null)}
+          aria-label="Close academic experience detail"
+        >
+          <FaXmark className="h-4 w-4" />
+        </button>
+
+        <div className="relative h-56 w-full shrink-0 sm:h-64">
+          <img
+            src={selectedAcademicProject.image}
+            alt={selectedAcademicProject.title}
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/30 to-transparent" />
+        </div>
+
+        <div className="overflow-y-auto p-6 sm:p-8">
+          <p className="font-mono text-xs font-semibold tracking-widest text-accent-soft uppercase">
+            Academic & Project Experience
+          </p>
+          <h3 className="mt-2 font-display text-2xl font-bold text-white sm:text-3xl">
+            {selectedAcademicProject.title}
+          </h3>
+          <p className="mt-1 text-sm text-slate-400">{selectedAcademicProject.subtitle}</p>
+
+          <div className="mt-4 flex flex-wrap gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent-light">
+              {selectedAcademicProject.date}
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300">
+              <FaLocationDot className="h-3 w-3 text-coral" />
+              {selectedAcademicProject.location}
+            </span>
+          </div>
+
+          <ul className="mt-6 space-y-3">
+            {selectedAcademicProject.details.map((detail) => (
+              <li key={detail} className="flex gap-3 text-sm leading-relaxed text-slate-300">
+                <FaCircleCheck className="mt-1 h-4 w-4 shrink-0 text-mint" />
+                <span>{detail}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  ) : null
+
+  const certificateModal = selectedCertificate ? (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-fade-in"
+      onClick={() => setSelectedCertificate(null)}
+    >
+      <div
+        className="relative w-full max-w-4xl animate-scale-in rounded-2xl border border-white/10 bg-ink-900 p-3 shadow-glow-lg"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          className="absolute -top-3 -right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-ink-800 text-slate-300 transition hover:bg-accent hover:text-white"
+          onClick={() => setSelectedCertificate(null)}
+          aria-label="Close certificate"
+        >
+          <FaXmark className="h-5 w-5" />
+        </button>
+        <img
+          src={selectedCertificate.image}
+          alt={selectedCertificate.title}
+          className="max-h-[70vh] w-full rounded-xl object-contain"
+        />
+        <div className="p-4 text-center">
+          <h3 className="font-display text-lg font-bold text-white">
+            {selectedCertificate.title}
+          </h3>
+          <p className="mt-1 text-sm text-slate-400">{selectedCertificate.issuer}</p>
+        </div>
+      </div>
+    </div>
+  ) : null
+
+  const certCard = (certificate: (typeof certificateData)[number], highlighted: boolean) => (
+    <article
+      key={certificate.id}
+      className={`group flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-glow ${
+        highlighted
+          ? 'border-accent/20 bg-gradient-to-b from-accent/10 via-ink-800/80 to-ink-800/80'
+          : 'border-white/8 bg-ink-800/60 hover:border-accent/25'
+      }`}
+    >
+      <div className="relative min-h-[180px] overflow-hidden bg-ink-700">
+        <button
+          type="button"
+          className="block h-full w-full cursor-pointer"
+          onClick={() => setSelectedCertificate(certificate)}
+          aria-label={`View ${certificate.title}`}
+        >
+          <img
+            src={certificate.image}
+            alt={certificate.title}
+            className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </button>
+
+        <button
+          type="button"
+          className="absolute top-1/2 left-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-70 backdrop-blur-sm transition hover:bg-accent hover:opacity-100"
+          aria-label="Previous certificate"
+        >
+          <FaChevronLeft className="h-3.5 w-3.5" />
+        </button>
+        <button
+          type="button"
+          className="absolute top-1/2 right-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-70 backdrop-blur-sm transition hover:bg-accent hover:opacity-100"
+          aria-label="Next certificate"
+        >
+          <FaChevronRight className="h-3.5 w-3.5" />
+        </button>
+        <span className="absolute right-3 bottom-3 rounded-full bg-black/60 px-2.5 py-1 font-mono text-xs font-semibold text-white backdrop-blur-sm">
+          3/3
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <span className="font-mono text-xs font-semibold tracking-widest text-accent-soft uppercase">
+          {certificate.date}
+        </span>
+        <h3 className="mt-2 font-display text-base font-bold leading-snug text-white">
+          {certificate.title}
+        </h3>
+        <p className="mt-1 text-sm font-medium text-slate-400">{certificate.issuer}</p>
+        <p className="mt-3 text-xs leading-relaxed text-slate-500">
+          {certificate.id === 'bnsp'
+            ? 'Completed certification in network and infrastructure competencies, including network design and configuration.'
+            : certificate.id === 'merit'
+              ? 'Received full Merit Award for outstanding and consistent academic excellence.'
+              : certificate.id === 'project-management'
+                ? 'Learned project management fundamentals, including cycles, methodology, and organizational structures.'
+                : certificate.id === 'data-science'
+                  ? 'Studied the basics of data science, data analysis, machine learning, and essential data tools.'
+                  : certificate.id === 'web-layouts'
+                    ? 'Created final assignments applying semantic HTML techniques and highly responsive web layouts using CSS.'
+                    : 'Learned to manage and query relational databases using basic and advanced SQL commands.'}
+        </p>
+      </div>
+    </article>
+  )
+
+  const experienceCard = (item: { id: string; secondaryTitle: string; secondarySubtitle: string; date: string; location: string; image: string }, onClick: () => void) => (
+    <button
+      key={item.id}
+      type="button"
+      onClick={onClick}
+      className="group flex flex-col overflow-hidden rounded-2xl border border-white/8 bg-ink-800/60 text-left transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/30 hover:shadow-glow"
+    >
+      <div className="relative h-40 overflow-hidden bg-ink-700">
+        <img
+          src={item.image}
+          alt={item.secondaryTitle}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-transparent to-transparent" />
+        <span className="absolute top-3 left-3 rounded-full border border-accent/30 bg-ink-950/70 px-3 py-1 font-mono text-[0.65rem] font-semibold tracking-wider text-accent-light uppercase backdrop-blur-sm">
+          {item.date}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-display text-base font-bold text-white transition-colors group-hover:text-accent-light">
+          {item.secondaryTitle}
+        </h3>
+        <p className="mt-1 text-sm font-medium text-slate-400">{item.secondarySubtitle}</p>
+        <p className="mt-2 flex items-center gap-1.5 text-xs text-slate-500">
+          <FaLocationDot className="h-3 w-3 text-coral" />
+          {item.location}
+        </p>
+
+        <span className="mt-4 flex items-center gap-2 pb-1 font-mono text-xs font-semibold tracking-widest text-accent-soft uppercase transition-colors group-hover:text-accent-light">
+          Click here
+          <FaArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
+      </div>
+    </button>
+  )
+
   return (
-    <div className="portfolio-container">
-      <nav className="navbar">
-        <div className="nav-logo">MF.</div>
-        <ul className="nav-links">
-          <li><a href="#about">About</a></li>
-          <li><a href="#education">Education</a></li>
-          <li><a href="#internships">Internships</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#licenses">Certificates</a></li>
-          <li><a href="#skills">Skills</a></li>
-        </ul>
+    <div className="min-h-screen bg-ink-950 font-sans text-slate-300 antialiased">
+      {/* Decorative background */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-grid-pattern bg-[size:48px_48px] opacity-40" />
+        <div className="absolute -top-40 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]" />
+        <div className="absolute top-1/3 -left-32 h-72 w-72 rounded-full bg-purple-500/10 blur-[100px]" />
+        <div className="absolute -right-32 bottom-1/4 h-72 w-72 rounded-full bg-pink-500/10 blur-[100px]" />
+      </div>
+
+      {/* ==================== NAVBAR ==================== */}
+      <nav className="fixed top-0 right-0 left-0 z-50 border-b border-white/5 bg-ink-950/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <a href="#about" className="flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-purple-600 font-display text-sm font-extrabold text-white shadow-glow">
+              MF
+            </span>
+            <span className="hidden font-display text-base font-bold tracking-tight text-white sm:block">
+              Maulika<span className="text-accent-soft">.</span>
+            </span>
+          </a>
+
+          <ul className="hidden items-center gap-7 md:flex">
+            {[
+              ['About', '#about'],
+              ['Education', '#education'],
+              ['Internships', '#internships'],
+              ['Experience', '#experience'],
+              ['Certificates', '#licenses'],
+              ['Skills', '#skills'],
+            ].map(([label, href]) => (
+              <li key={href}>
+                <a
+                  href={href}
+                  className="relative text-sm font-medium text-slate-400 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-gradient-to-r after:from-accent after:to-purple-400 after:transition-all after:duration-300 hover:after:w-full"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href="mailto:maulikafitriani@gmail.com"
+            className="hidden rounded-lg border border-accent/30 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent-light transition-all hover:bg-accent hover:text-white sm:inline-flex"
+          >
+            Hire Me
+          </a>
+
+          {/* Mobile menu button placeholder — simple anchor for now */}
+          <a
+            href="#about"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-slate-300 md:hidden"
+            aria-label="Menu"
+          >
+            <span className="flex flex-col gap-1">
+              <span className="block h-0.5 w-4 bg-current" />
+              <span className="block h-0.5 w-4 bg-current" />
+              <span className="block h-0.5 w-4 bg-current" />
+            </span>
+          </a>
+        </div>
       </nav>
 
-      <section id="about" className="section-padding">
-        <div className="hero-content">
-          <div className="profile-image-container">
-            <img src={profileImg} className="profile-avatar" alt="Maulika Fitriani Profile" />
-          </div>
-
-          <h1 className="name-title">MAULIKA FITRIANI</h1>
-          <p className="subtitle">Business & System Analyst | Frontend Developer</p>
-          <p className="location">+62 895 1711 1527 | Bandung, West Java</p>
-
-          <div className="contact-buttons">
-            <a href="mailto:maulikafitriani@gmail.com" className="btn-contact-icon btn-gmail" title="Email Me">
-              <img src="https://unpkg.com/simple-icons@v13/icons/gmail.svg" alt="Gmail" width="20" height="20" style={{ filter: 'invert(31%) sepia(94%) saturate(4505%) hue-rotate(350deg) brightness(95%) contrast(93%)' }} />
-            </a>
-            <a href="https://www.linkedin.com/in/maulikafitriani" target="_blank" rel="noreferrer" className="btn-contact-icon btn-linkedin" title="LinkedIn">
-              <img src="https://unpkg.com/simple-icons@v13/icons/linkedin.svg" alt="LinkedIn" width="20" height="20" style={{ filter: 'invert(29%) sepia(93%) saturate(1512%) hue-rotate(178deg) brightness(91%) contrast(101%)' }} />
-            </a>
-            <a href="https://wa.me/6289517111527" target="_blank" rel="noreferrer" className="btn-contact-icon btn-whatsapp" title="Chat on WhatsApp">
-              <img src="https://unpkg.com/simple-icons@v13/icons/whatsapp.svg" alt="WhatsApp" width="20" height="20" style={{ filter: 'invert(64%) sepia(50%) saturate(4649%) hue-rotate(113deg) brightness(97%) contrast(82%)' }} />
-            </a>
-          </div>
-
-          <div className="summary-box">
-            <p>
-              Information Systems Associate graduate and current online Bachelor’s in Informatics student at Telkom University (GPA 3.80/4.00), combining over a year of corporate IT experience with a BNSP Junior Network Administrator certification. Experienced in leading the full Software Development Life Cycle (SDLC) as a System Analyst, Software Engineer, and Frontend Developer—from requirement gathering and process mapping using Agile/Waterfall to hands-on engineering with React.js, Next.js, and TypeScript.
-            </p>
-            <p>
-              Proven track record in digitalizing enterprise supply chain and finance systems for major automotive suppliers while delivering responsive UI/UX architectures. Passionate about bridging business strategy with modern software development to build scalable, high-performance, and user-centric digital solutions.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {isImageModalOpen && (
-        <div className="image-modal-overlay" onClick={closeImageModal}>
-          <div className="image-modal-content" onClick={(event) => event.stopPropagation()}>
-            <button className="image-modal-close" onClick={closeImageModal} aria-label="Close image">×</button>
-            <img src={educationPhotos[currentEduSlide]} alt={`Education Photo ${currentEduSlide + 1}`} className="image-modal-image" />
-          </div>
-        </div>
-      )}
-
-      <section id="education" className="section-padding">
-        <h2 className="section-title">Education</h2>
-
-        <div className="education-container">
-          <div className="edu-photo-wrapper">
-            <div className="edu-slider-container">
-              <div className="slider-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <span>Click to enlarge</span>
-              </div>
-
-              <img src={educationPhotos[currentEduSlide]} alt={`Education Photo ${currentEduSlide + 1}`} className="edu-photo" onClick={openImageModal} />
-
-              {educationPhotos.length > 1 && (
-                <>
-                  <button className="slider-btn prev-btn" onClick={prevEduSlide} aria-label="Previous Photo">&#10094;</button>
-                  <button className="slider-btn next-btn" onClick={nextEduSlide} aria-label="Next Photo">&#10095;</button>
-                </>
-              )}
-
-              {educationPhotos.length > 1 && (
-                <div className="slider-counter">{currentEduSlide + 1}/{educationPhotos.length}</div>
-              )}
+      {/* ==================== HERO / ABOUT ==================== */}
+      <section id="about" className="relative z-10 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="relative mx-auto mb-8 w-fit animate-fade-up">
+            <div className="absolute -inset-3 rounded-full bg-gradient-to-tr from-accent via-purple-500 to-pink-500 opacity-60 blur-lg" />
+            <div className="relative h-36 w-36 overflow-hidden rounded-full border-2 border-white/20 bg-ink-800 sm:h-44 sm:w-44">
+              <img
+                src={profileImg}
+                alt="Maulika Fitriani Profile"
+                className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <div className="absolute right-1 bottom-1 flex h-10 w-10 items-center justify-center rounded-full border-4 border-ink-950 bg-mint text-ink-950">
+              <FaCircleCheck className="h-5 w-5" />
             </div>
           </div>
 
-          <div className="timeline">
-            <div className="timeline-item">
-              <div className="time-header">
-                <h3>Telkom University <span className="location-tag">| Bandung, Indonesia</span></h3>
-                <span className="date-tag">Aug 2025 – Present</span>
-              </div>
-              <p className="degree">• Bachelor’s Degree (Extension) in Informatics PJJ (Online Learning)</p>
-            </div>
+          <p className="animate-fade-up font-mono text-xs font-semibold tracking-[0.3em] text-accent-soft uppercase">
+            Welcome to my portfolio
+          </p>
+          <h1 className="mt-4 animate-fade-up font-display text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
+            MAULIKA <span className="text-gradient">FITRIANI</span>
+          </h1>
 
-            <div className="timeline-item">
-              <div className="time-header">
-                <h3>Telkom University <span className="location-tag">| Bandung, Indonesia</span></h3>
-                <span className="date-tag">Aug 2022 - 2025</span>
-              </div>
-              <p className="degree">• Associate Degree (A.Md. Kom.) in Information System | <strong>GPA 3.80 / 4.00</strong></p>
-            </div>
+          <div className="mt-4 flex animate-fade-up flex-wrap items-center justify-center gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-semibold text-accent-light">
+              <FaBriefcase className="h-3.5 w-3.5" />
+              Business & System Analyst | Frontend Developer
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-semibold text-slate-300">
+              <FaLocationDot className="h-3.5 w-3.5 text-coral" />
+              Bandung, West Java
+            </span>
           </div>
-        </div>
 
-        <div className="education-projects-section">
-          <h2 className="subsection-title">Projects</h2>
-          <div className="project-cards-grid">
-            <div className="project-card">
-              <span className="project-date">Feb 2024 - June 2024</span>
-              <h3>Mobile-based Scholarship Application</h3>
-              <p className="project-role">Programmer Fullstack Developer & Quality Assurance</p>
-              <ul className="bullet-points">
-                <li><p>Developed front-end using Flutter and Back-end using PHP.</p></li>
-                <li>Collaborated with designers and developers</li>
-              </ul>
-            </div>
-
-            <div className="project-card">
-              <span className="project-date">Oct 2023 - Dec 2023</span>
-              <h3>SatuSisi Coffee Web Application</h3>
-              <p className="project-role">Programmer Fullstack Developer & System Analyst</p>
-              <ul className="bullet-points">
-                <li>Analyzted business needs, developed user-friendly website</li>
-                <li>Built front-end with PHP and Back-end with HTML CSS</li>
-              </ul>
-            </div>
-
-            <div className="project-card">
-              <span className="project-date">Feb 2023 - June 2023</span>
-              <h3>Web-based Cryptocurrency Application</h3>
-              <p className="project-role">Programmer Fullstack Developer</p>
-              <ul className="bullet-points">
-                <li>Created application using HTML CSS and JavaScript with RESTAPIs integration</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="internships" className="section-padding">
-        <h2 className="section-title">Internship Experience</h2>
-
-        <div className="internship-grid">
-          {internshipData.map((internship) => (
-            <button
-              key={internship.id}
-              type="button"
-              className="internship-card"
-              onClick={() => setSelectedInternship(internship)}
+          <div className="mt-6 flex animate-fade-up items-center justify-center gap-4">
+            <a
+              href="mailto:maulikafitriani@gmail.com"
+              className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition-all hover:-translate-y-1 hover:border-[#EA4335] hover:bg-[#EA4335]/10 hover:text-[#EA4335] hover:shadow-glow"
+              title="Email Me"
             >
-              <div className="internship-card-visual">
-                <img src={internship.image} alt={internship.company} className="internship-card-photo" />
-              </div>
-
-              <div className="internship-card-body">
-                <span className="internship-card-date">{internship.date}</span>
-                <h3>{internship.company}</h3>
-                <p className="internship-card-role">{internship.role}</p>
-                <span className="internship-card-location">{internship.location}</span>
-              </div>
-
-              <span className="internship-card-hint">Click here</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {selectedInternship && (
-        <div className="internship-modal-overlay" onClick={() => setSelectedInternship(null)}>
-          <div className="internship-modal-content" onClick={(event) => event.stopPropagation()}>
-            <button className="internship-modal-close" onClick={() => setSelectedInternship(null)} aria-label="Close internship detail">×</button>
-
-            <div className="internship-modal-visual">
-              <img src={selectedInternship.image} alt={selectedInternship.company} className="internship-modal-image" />
-            </div>
-
-            <div className="internship-modal-text">
-              <p className="internship-modal-label">Internship Experience</p>
-              <h3>{selectedInternship.company}</h3>
-              <p className="internship-modal-role">{selectedInternship.role}</p>
-              <div className="internship-modal-meta">
-                <span>{selectedInternship.date}</span>
-                <span>{selectedInternship.location}</span>
-              </div>
-
-              <ul className="internship-detail-list">
-                {selectedInternship.details.map((detail) => (
-                  <li key={detail}>{detail}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <section id="experience" className="section-padding">
-        <h2 className="section-title">Academic & Project Experience</h2>
-
-        <div className="academic-project-grid">
-          {academicProjectData.map((experience) => (
-            <button
-              key={experience.id}
-              type="button"
-              className="internship-card"
-              onClick={() => setSelectedAcademicProject(experience)}
+              <SiGmail className="h-4.5 w-4.5 transition-transform group-hover:scale-110" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/maulikafitriani"
+              target="_blank"
+              rel="noreferrer"
+              className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition-all hover:-translate-y-1 hover:border-[#0A66C2] hover:bg-[#0A66C2]/10 hover:text-[#0A66C2] hover:shadow-glow"
+              title="LinkedIn"
             >
-              <div className="internship-card-visual">
-                <img src={experience.image} alt={experience.title} className="internship-card-photo" />
-              </div>
-
-              <div className="internship-card-body">
-                <span className="internship-card-date">{experience.date}</span>
-                <h3>{experience.title}</h3>
-                <p className="internship-card-role">{experience.subtitle}</p>
-                <span className="internship-card-location">{experience.location}</span>
-              </div>
-
-              <span className="internship-card-hint">Click here</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {selectedAcademicProject && (
-        <div className="internship-modal-overlay" onClick={() => setSelectedAcademicProject(null)}>
-          <div className="internship-modal-content" onClick={(event) => event.stopPropagation()}>
-            <button className="internship-modal-close" onClick={() => setSelectedAcademicProject(null)} aria-label="Close academic experience detail">×</button>
-
-            <div className="internship-modal-visual">
-              <img src={selectedAcademicProject.image} alt={selectedAcademicProject.title} className="internship-modal-image" />
-            </div>
-
-            <div className="internship-modal-text">
-              <p className="internship-modal-label">Academic & Project Experience</p>
-              <h3>{selectedAcademicProject.title}</h3>
-              <p className="internship-modal-role">{selectedAcademicProject.subtitle}</p>
-              <div className="internship-modal-meta">
-                <span>{selectedAcademicProject.date}</span>
-                <span>{selectedAcademicProject.location}</span>
-              </div>
-
-              <ul className="internship-detail-list">
-                {selectedAcademicProject.details.map((detail) => (
-                  <li key={detail}>{detail}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <section id="licenses" className="section-padding">
-        <h2 className="section-title">Certificates & Awards</h2>
-
-        <div className="certificate-groups">
-          <div className="certificate-category">
-            <div className="certificates-grid highlight-grid">
-              {certificateData.filter((certificate) => certificate.highlight).map((certificate) => (
-                <article key={certificate.id} className="cert-card bg-highlight">
-                  <div className="cert-card-visual">
-                    <button
-                      type="button"
-                      className="cert-photo-button"
-                      onClick={() => setSelectedCertificate(certificate)}
-                      aria-label={`View ${certificate.title}`}
-                    >
-                      <img src={certificate.image} alt={certificate.title} className="cert-photo" />
-                    </button>
-                    <button type="button" className="cert-nav cert-nav-left" aria-label="Previous certificate">‹</button>
-                    <button type="button" className="cert-nav cert-nav-right" aria-label="Next certificate">›</button>
-                    <span className="cert-card-counter">3/3</span>
-                  </div>
-                  <div className="cert-card-body">
-                    <span className="cert-date">{certificate.date}</span>
-                    <h3>{certificate.title}</h3>
-                    <p className="issuer">{certificate.issuer}</p>
-                    <p className="desc">
-                      {certificate.id === 'bnsp'
-                        ? 'Completed certification in network and infrastructure competencies, including network design and configuration.'
-                        : 'Received full Merit Award for outstanding and consistent academic excellence.'}
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
+              <FaLinkedin className="h-4.5 w-4.5 transition-transform group-hover:scale-110" />
+            </a>
+            <a
+              href="https://wa.me/6289517111527"
+              target="_blank"
+              rel="noreferrer"
+              className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition-all hover:-translate-y-1 hover:border-[#25D366] hover:bg-[#25D366]/10 hover:text-[#25D366] hover:shadow-glow"
+              title="Chat on WhatsApp"
+            >
+              <SiWhatsapp className="h-4.5 w-4.5 transition-transform group-hover:scale-110" />
+            </a>
           </div>
 
-          <div className="certificate-category">
-            <div className="certificates-grid basic-grid">
-              {certificateData.filter((certificate) => !certificate.highlight).map((certificate) => (
-                <article key={certificate.id} className="cert-card">
-                  <div className="cert-card-visual">
-                    <button
-                      type="button"
-                      className="cert-photo-button"
-                      onClick={() => setSelectedCertificate(certificate)}
-                      aria-label={`View ${certificate.title}`}
-                    >
-                      <img src={certificate.image} alt={certificate.title} className="cert-photo" />
-                    </button>
-                    <button type="button" className="cert-nav cert-nav-left" aria-label="Previous certificate">‹</button>
-                    <button type="button" className="cert-nav cert-nav-right" aria-label="Next certificate">›</button>
-                    <span className="cert-card-counter">3/3</span>
-                  </div>
-                  <div className="cert-card-body">
-                    <span className="cert-date">{certificate.date}</span>
-                    <h3>{certificate.title}</h3>
-                    <p className="issuer">{certificate.issuer}</p>
-                    <p className="desc">
-                      {certificate.id === 'project-management' && 'Learned project management fundamentals, including cycles, methodology, and organizational structures.'}
-                      {certificate.id === 'data-science' && 'Studied the basics of data science, data analysis, machine learning, and essential data tools.'}
-                      {certificate.id === 'web-layouts' && 'Created final assignments applying semantic HTML techniques and highly responsive web layouts using CSS.'}
-                      {certificate.id === 'sql' && 'Learned to manage and query relational databases using basic and advanced SQL commands.'}
-                    </p>
-                  </div>
-                </article>
+          <div className="mx-auto mt-8 max-w-3xl animate-fade-up rounded-2xl border border-white/8 bg-ink-800/60 p-6 text-left backdrop-blur-sm sm:p-8">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/15 text-accent-soft">
+                <FaLayerGroup className="h-4 w-4" />
+              </span>
+              <h3 className="font-display text-sm font-bold tracking-widest text-white uppercase">
+                Professional Summary
+              </h3>
+            </div>
+            <div className="space-y-4 text-sm leading-relaxed text-slate-400">
+              <p>
+                Information Systems Associate graduate and current online Bachelor's in Informatics
+                student at Telkom University (GPA 3.80/4.00), combining over a year of corporate IT
+                experience with a BNSP Junior Network Administrator certification. Experienced in
+                leading the full Software Development Life Cycle (SDLC) as a System Analyst,
+                Software Engineer, and Frontend Developer—from requirement gathering and process
+                mapping using Agile/Waterfall to hands-on engineering with React.js, Next.js, and
+                TypeScript.
+              </p>
+              <p>
+                Proven track record in digitalizing enterprise supply chain and finance systems for
+                major automotive suppliers while delivering responsive UI/UX architectures. Passionate
+                about bridging business strategy with modern software development to build scalable,
+                high-performance, and user-centric digital solutions.
+              </p>
+            </div>
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+              {['React.js', 'Next.js', 'TypeScript', 'System Analysis', 'SDLC', 'Agile / Waterfall'].map((tech) => (
+                <span
+                  key={tech}
+                  className="rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-xs font-semibold text-accent-light"
+                >
+                  {tech}
+                </span>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section id="skills" className="section-padding">
-        <h2 className="section-title">Technical & Soft Skills</h2>
+      {/* ==================== EDUCATION ==================== */}
+      <section id="education" className="relative z-10 px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          {sectionHeader('01', 'Education', 'My academic journey and university projects')}
 
-        <div className="skills-container">
-          <div className="skills-group">
-            <h3>Languages</h3>
-            <div className="skills-icons-grid">
-              <div className="skill-icon-item" title="Indonesian (Native)" style={{ border: '1px solid transparent' }}>
-                <img src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/comment-medical.svg" alt="Indonesian" style={{ filter: 'invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)' }} />
-                <span>Indonesian</span>
+          <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
+            {/* Education Photo Slider */}
+            <div className="flex items-stretch justify-center">
+              <div className="relative h-[380px] w-full max-w-sm overflow-hidden rounded-2xl border border-white/10 bg-ink-800 shadow-glow sm:h-[400px]">
+                <button
+                  type="button"
+                  className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-lg bg-ink-950/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-accent"
+                  onClick={openImageModal}
+                >
+                  <FaMagnifyingGlass className="h-3 w-3" />
+                  Click to enlarge
+                </button>
+
+                <img
+                  src={educationPhotos[currentEduSlide]}
+                  alt={`Education Photo ${currentEduSlide + 1}`}
+                  className="h-full w-full cursor-zoom-in object-cover transition-transform duration-500 hover:scale-105"
+                  onClick={openImageModal}
+                />
+
+                {educationPhotos.length > 1 && (
+                  <>
+                    <button
+                      className="absolute top-1/2 left-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition hover:bg-accent"
+                      onClick={prevEduSlide}
+                      aria-label="Previous Photo"
+                    >
+                      <FaChevronLeft className="h-4 w-4" />
+                    </button>
+                    <button
+                      className="absolute top-1/2 right-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition hover:bg-accent"
+                      onClick={nextEduSlide}
+                      aria-label="Next Photo"
+                    >
+                      <FaChevronRight className="h-4 w-4" />
+                    </button>
+                  </>
+                )}
+
+                {educationPhotos.length > 1 && (
+                  <span className="absolute right-3 bottom-3 rounded-full bg-black/60 px-3 py-1 font-mono text-xs font-semibold text-white backdrop-blur-sm">
+                    {currentEduSlide + 1}/{educationPhotos.length}
+                  </span>
+                )}
               </div>
-              <div className="skill-icon-item" title="English (Intermediate)" style={{ border: '1px solid transparent' }}>
-                <img src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/earth-americas.svg" alt="English" style={{ filter: 'invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)' }} />
-                <span>English</span>
+            </div>
+
+            {/* Education Timeline */}
+            <div className="space-y-5">
+              {[
+                {
+                  degree: (
+                    <>
+                      <span className="text-white">Bachelor's Degree (Extension) in Informatics PJJ</span>{' '}
+                      <span className="font-normal text-slate-400">(Online Learning)</span>
+                    </>
+                  ),
+                  school: 'Telkom University',
+                  location: 'Bandung, Indonesia',
+                  date: 'Aug 2025 – Present',
+                  current: true,
+                },
+                {
+                  degree: (
+                    <>
+                      <span className="text-white">Associate Degree (A.Md. Kom.) in Information System</span>{' '}
+                      <span className="font-normal text-slate-400">
+                        | <strong className="font-semibold text-gold">GPA 3.80 / 4.00</strong>
+                      </span>
+                    </>
+                  ),
+                  school: 'Telkom University',
+                  location: 'Bandung, Indonesia',
+                  date: 'Aug 2022 - 2025',
+                  current: false,
+                },
+              ].map((item) => (
+                <div
+                  key={item.date}
+                  className="group relative rounded-2xl border border-white/8 bg-ink-800/60 p-6 transition-all duration-300 hover:border-accent/25 hover:bg-ink-800"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ${item.current ? 'bg-accent text-white' : 'bg-accent/15 text-accent-soft'}`}>
+                        <FaGraduationCap className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <h3 className="font-display text-lg font-bold text-white">{item.school}</h3>
+                        <p className="flex items-center gap-1 text-xs text-slate-500">
+                          <FaLocationDot className="h-3 w-3 text-coral" />
+                          {item.location}
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      className={`rounded-full px-3 py-1 font-mono text-xs font-semibold ${
+                        item.current
+                          ? 'border border-mint/30 bg-mint/10 text-mint'
+                          : 'border border-accent/30 bg-accent/10 text-accent-light'
+                      }`}
+                    >
+                      {item.current ? '●' : ''} {item.date}
+                    </span>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-slate-300">{item.degree}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Education Projects */}
+          <div className="mt-16">
+            <div className="mb-8 flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-accent-soft">
+                <FaLayerGroup className="h-4.5 w-4.5" />
+              </span>
+              <h3 className="font-display text-xl font-bold text-white sm:text-2xl">University Projects</h3>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {educationProjects.map((project) => (
+                <div
+                  key={project.title}
+                  className="group flex flex-col rounded-2xl border border-white/8 bg-ink-800/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/25 hover:shadow-glow"
+                >
+                  <span className="font-mono text-xs font-semibold tracking-widest text-accent-soft uppercase">
+                    {project.date}
+                  </span>
+                  <h4 className="mt-2 font-display text-base font-bold text-white">{project.title}</h4>
+                  <p className="mt-1 text-sm font-medium text-slate-400">{project.role}</p>
+                  <ul className="mt-4 space-y-2">
+                    {project.bullets.map((bullet) => (
+                      <li key={bullet} className="flex gap-2 text-xs leading-relaxed text-slate-500">
+                        <FaCircleCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-mint" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== INTERNSHIPS ==================== */}
+      <section id="internships" className="relative z-10 px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          {sectionHeader('02', 'Internship Experience', 'Professional roles that shaped my career')}
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {internshipData.map((internship) =>
+              experienceCard(
+                {
+                  id: internship.id,
+                  secondaryTitle: internship.company,
+                  secondarySubtitle: internship.role,
+                  date: internship.date,
+                  location: internship.location,
+                  image: internship.image,
+                },
+                () => setSelectedInternship(internship),
+              ),
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== ACADEMIC & PROJECT EXPERIENCE ==================== */}
+      <section id="experience" className="relative z-10 px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          {sectionHeader('03', 'Academic & Project Experience', 'Teaching, community, and hands-on roles')}
+
+          <div className="mx-auto grid max-w-3xl gap-6 sm:grid-cols-2">
+            {academicProjectData.map((experience) =>
+              experienceCard(
+                {
+                  id: experience.id,
+                  secondaryTitle: experience.title,
+                  secondarySubtitle: experience.subtitle,
+                  date: experience.date,
+                  location: experience.location,
+                  image: experience.image,
+                },
+                () => setSelectedAcademicProject(experience),
+              ),
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== CERTIFICATES ==================== */}
+      <section id="licenses" className="relative z-10 px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          {sectionHeader('04', 'Certificates & Awards', 'Credentials from professional and academic institutions')}
+
+          <div className="space-y-12">
+            {/* Highlighted Certificates */}
+            <div>
+              <div className="mx-auto mb-6 grid max-w-3xl gap-6 sm:grid-cols-2">
+                {certificateData.filter((certificate) => certificate.highlight).map((certificate) =>
+                  certCard(certificate, true),
+                )}
+              </div>
+            </div>
+
+            {/* Basic Certificates */}
+            <div>
+              <div className="mb-6 flex items-center justify-center gap-2 text-xs font-semibold tracking-widest text-slate-500 uppercase">
+                <span className="h-px w-12 bg-white/10" />
+                Professional Certifications
+                <span className="h-px w-12 bg-white/10" />
+              </div>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {certificateData.filter((certificate) => !certificate.highlight).map((certificate) =>
+                  certCard(certificate, false),
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== SKILLS ==================== */}
+      <section id="skills" className="relative z-10 px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          {sectionHeader('05', 'Technical & Soft Skills', 'Tools and abilities I bring to every project')}
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Languages */}
+            <div className="rounded-2xl border border-white/8 bg-ink-800/60 p-6 transition-colors hover:border-accent/25">
+              <h3 className="mb-5 flex items-center gap-2 font-display text-base font-bold text-white">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/15 text-accent-soft">
+                  <FaCircleCheck className="h-4 w-4" />
+                </span>
+                Languages
+              </h3>
+              <div className="grid grid-cols-4 gap-4">
+                {[
+                  ['Indonesian', 'text-[#dc2626]'],
+                  ['English', 'text-[#2563eb]'],
+                ].map(([label, color]) => (
+                  <div
+                    key={label}
+                    title={label}
+                    className="group flex cursor-default flex-col items-center justify-center gap-2 rounded-xl border border-transparent p-4 transition-all duration-300 hover:-translate-y-1 hover:border-accent/25 hover:bg-ink-700/60 hover:shadow-glow"
+                  >
+                    <span className={`flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 ${color}`}>
+                      <FaCircleCheck className="h-5 w-5" />
+                    </span>
+                    <span className="w-full truncate text-center text-xs font-medium text-slate-400">
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Soft Skills */}
+            <div className="rounded-2xl border border-white/8 bg-ink-800/60 p-6 transition-colors hover:border-accent/25">
+              <h3 className="mb-5 flex items-center gap-2 font-display text-base font-bold text-white">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/15 text-accent-soft">
+                  <FaAward className="h-4 w-4" />
+                </span>
+                Soft Skills
+              </h3>
+              <div className="grid grid-cols-5 gap-4">
+                {[
+                  ['Leadership', 'text-gold'],
+                  ['Communication', 'text-accent-soft'],
+                  ['Collaboration', 'text-mint'],
+                  ['Adaptability', 'text-coral'],
+                  ['Problem Solving', 'text-purple-400'],
+                ].map(([label, color]) => (
+                  <div
+                    key={label}
+                    title={label}
+                    className="group flex cursor-default flex-col items-center justify-center gap-2 rounded-xl border border-transparent p-4 transition-all duration-300 hover:-translate-y-1 hover:border-accent/25 hover:bg-ink-700/60 hover:shadow-glow"
+                  >
+                    <FaAward className={`h-8 w-8 ${color}`} />
+                    <span className="w-full truncate text-center text-[0.65rem] font-medium text-slate-400">
+                      {label}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          <div className="skills-group">
-            <h3>Technical Skills</h3>
-            <div className="skills-icons-grid">
+          {/* Technical Skills */}
+          <div className="mt-6 rounded-2xl border border-white/8 bg-ink-800/60 p-6 transition-colors hover:border-accent/25">
+            <h3 className="mb-6 flex items-center gap-2 font-display text-base font-bold text-white">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/15 text-accent-soft">
+                <FaBriefcase className="h-4 w-4" />
+              </span>
+              Technical Skills
+            </h3>
+            <div className="grid grid-cols-3 gap-4 sm:grid-cols-5 lg:grid-cols-10">
               {[
                 ['Figma', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg', 'UI/UX Design (Figma)'],
                 ['HTML5', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', 'HTML5'],
@@ -513,27 +971,19 @@ function App() {
                 ['Diagrams', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-original.svg', 'Use Cases, ERDs & Activity Diagrams'],
                 ['Design Thinking', 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg', 'Design Thinking'],
               ].map(([label, src, title]) => (
-                <div key={label} className="skill-icon-item" title={title} style={{ border: '1px solid transparent' }}>
-                  <img src={src} alt={label} />
-                  <span>{label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="skills-group">
-            <h3>Soft Skills</h3>
-            <div className="skills-icons-grid">
-              {[
-                ['Leadership', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/crown.svg', 'Leadership'],
-                ['Communication', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/comments.svg', 'Strategic Communication'],
-                ['Collaboration', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/users-gear.svg', 'Cross-functional Collaboration'],
-                ['Adaptability', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/arrows-spin.svg', 'Adaptability'],
-                ['Problem Solving', 'https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/svgs/solid/lightbulb.svg', 'Problem Solving'],
-              ].map(([label, src, title]) => (
-                <div key={label} className="skill-icon-item" title={title} style={{ border: '1px solid transparent' }}>
-                  <img src={src} alt={label} style={{ filter: 'invert(40%) sepia(10%) saturate(1000%) hue-rotate(320deg)' }} />
-                  <span>{label}</span>
+                <div
+                  key={label}
+                  title={title}
+                  className="group flex cursor-default flex-col items-center justify-center gap-2 rounded-xl border border-transparent p-3 transition-all duration-300 hover:-translate-y-1 hover:border-accent/25 hover:bg-ink-700/60 hover:shadow-glow"
+                >
+                  <img
+                    src={src}
+                    alt={label}
+                    className="h-8 w-8 object-contain transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <span className="w-full truncate text-center text-[0.65rem] font-medium text-slate-400">
+                    {label}
+                  </span>
                 </div>
               ))}
             </div>
@@ -541,21 +991,57 @@ function App() {
         </div>
       </section>
 
-      {selectedCertificate && (
-        <div className="image-modal-overlay" onClick={() => setSelectedCertificate(null)}>
-          <div className="image-modal-content cert-modal-content" onClick={(event) => event.stopPropagation()}>
-            <button className="image-modal-close" onClick={() => setSelectedCertificate(null)} aria-label="Close certificate">×</button>
-            <img src={selectedCertificate.image} alt={selectedCertificate.title} className="image-modal-image" />
-            <div className="cert-modal-caption">
-              <h3>{selectedCertificate.title}</h3>
-              <p>{selectedCertificate.issuer}</p>
+      {/* ==================== MODALS ==================== */}
+      {educationModal}
+      {internshipModal}
+      {academicModal}
+      {certificateModal}
+
+      {/* ==================== FOOTER ==================== */}
+      <footer className="relative z-10 border-t border-white/5 bg-ink-950/80">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 py-10 sm:flex-row sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-purple-600 font-display text-sm font-extrabold text-white">
+              MF
+            </span>
+            <div>
+              <p className="font-display text-sm font-bold text-white">Maulika Fitriani</p>
+              <p className="text-xs text-slate-500">Business & System Analyst | Frontend Developer</p>
             </div>
           </div>
-        </div>
-      )}
 
-      <footer>
-        <p>© {new Date().getFullYear()} Maulika Fitriani. Powered by React + Vite.</p>
+          <div className="flex items-center gap-3">
+            <a
+              href="mailto:maulikafitriani@gmail.com"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition-all hover:border-[#EA4335] hover:text-[#EA4335]"
+              title="Email"
+            >
+              <SiGmail className="h-4 w-4" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/maulikafitriani"
+              target="_blank"
+              rel="noreferrer"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition-all hover:border-[#0A66C2] hover:text-[#0A66C2]"
+              title="LinkedIn"
+            >
+              <FaLinkedin className="h-4 w-4" />
+            </a>
+            <a
+              href="https://wa.me/6289517111527"
+              target="_blank"
+              rel="noreferrer"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition-all hover:border-[#25D366] hover:text-[#25D366]"
+              title="WhatsApp"
+            >
+              <SiWhatsapp className="h-4 w-4" />
+            </a>
+          </div>
+
+          <p className="font-mono text-xs text-slate-500">
+            © {new Date().getFullYear()} Maulika Fitriani. Powered by React + Vite.
+          </p>
+        </div>
       </footer>
     </div>
   )
