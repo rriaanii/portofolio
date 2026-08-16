@@ -215,6 +215,12 @@ function App() {
       date: 'July 2024 – July 2025',
       location: 'Cikarang, Indonesia',
       image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
+      photos: [
+        'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+      ],
       details: [
         'Finance Invoice Management Systems: Collaborated within the BA and Frontend teams to digitize and streamline corporate finance invoicing workflows.',
         'Visitor Management Systems: Engineered intuitive frontend interfaces tailored for security, administrators, and visitors using tablet devices. Optimized check-in workflows for dynamic visit categories including Meetings, Contractors, and Warehouse Deliveries.',
@@ -240,6 +246,11 @@ function App() {
       date: 'Oct 2019 - Dec 2019',
       location: 'Banten, Indonesia',
       image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
+      photos: [
+        'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1200&q=80',
+      ],
       details: [
         'Prepared account journals, deposit bills, and savings book account stamps for credit reviews.',
         'Inputted cooperative credit file data systematically into the corporate bank system.',
@@ -248,6 +259,7 @@ function App() {
   ]
 
   const [selectedInternship, setSelectedInternship] = useState<(typeof internshipData)[number] | null>(null)
+  const [selectedGalleryIndexByInternship, setSelectedGalleryIndexByInternship] = useState<Record<string, number>>({})
 
   const academicProjectData = [
     {
@@ -345,63 +357,132 @@ function App() {
     </div>
   ) : null
 
-  const internshipModal = selectedInternship ? (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-fade-in"
-      onClick={() => setSelectedInternship(null)}
-    >
+  const internshipModal = selectedInternship ? (() => {
+    const galleryPhotos = selectedInternship.photos ?? []
+    const activeGalleryIndex = selectedGalleryIndexByInternship[selectedInternship.id] ?? 0
+    const activeGalleryImage = galleryPhotos[activeGalleryIndex] ?? selectedInternship.image
+    const visibleGalleryPhotos = galleryPhotos.filter((_, index) => index !== activeGalleryIndex)
+
+    return (
       <div
-        className="relative flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-ink-900 shadow-glow-lg animate-scale-in"
-        onClick={(event) => event.stopPropagation()}
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-fade-in"
+        onClick={() => setSelectedInternship(null)}
       >
-        <button
-          className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-[#fff] transition hover:bg-accent"
-          onClick={() => setSelectedInternship(null)}
-          aria-label="Close internship detail"
+        <div
+          className="relative flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-ink-900 shadow-glow-lg animate-scale-in"
+          onClick={(event) => event.stopPropagation()}
         >
-          <FaXmark className="h-4 w-4" />
-        </button>
+          <button
+            className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-[#fff] transition hover:bg-accent"
+            onClick={() => setSelectedInternship(null)}
+            aria-label="Close internship detail"
+          >
+            <FaXmark className="h-4 w-4" />
+          </button>
 
-        <div className="relative h-56 w-full shrink-0 sm:h-64">
-          <img
-            src={selectedInternship.image}
-            alt={selectedInternship.company}
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/30 to-transparent" />
-        </div>
-
-        <div className="overflow-y-auto p-6 sm:p-8">
-          <p className="font-mono text-xs font-semibold tracking-widest text-accent-soft uppercase">
-            Internship Experience
-          </p>
-          <h3 className="mt-2 font-display text-2xl font-bold text-white sm:text-3xl">
-            {selectedInternship.company}
-          </h3>
-          <p className="mt-1 text-sm text-slate-400">{selectedInternship.role}</p>
-
-          <div className="mt-4 flex flex-wrap gap-3">
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent-light">
-              {selectedInternship.date}
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300">
-              <FaLocationDot className="h-3 w-3 text-coral" />
-              {selectedInternship.location}
-            </span>
+          <div className="relative h-56 w-full shrink-0 sm:h-64">
+            <img
+              src={selectedInternship.image}
+              alt={selectedInternship.company}
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/30 to-transparent" />
           </div>
 
-          <ul className="mt-6 space-y-3">
-            {selectedInternship.details.map((detail) => (
-              <li key={detail} className="flex gap-3 text-sm leading-relaxed text-slate-300">
-                <FaCircleCheck className="mt-1 h-4 w-4 shrink-0 text-mint" />
-                <span>{detail}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="overflow-y-auto p-6 sm:p-8">
+            <p className="font-mono text-xs font-semibold tracking-widest text-accent-soft uppercase">
+              Internship Experience
+            </p>
+            <h3 className="mt-2 font-display text-2xl font-bold text-white sm:text-3xl">
+              {selectedInternship.company}
+            </h3>
+            <p className="mt-1 text-sm text-slate-400">{selectedInternship.role}</p>
+
+            <div className="mt-4 flex flex-wrap gap-3">
+              <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent-light">
+                {selectedInternship.date}
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300">
+                <FaLocationDot className="h-3 w-3 text-coral" />
+                {selectedInternship.location}
+              </span>
+            </div>
+
+            <ul className="mt-8 space-y-3">
+              {selectedInternship.details.map((detail) => (
+                <li key={detail} className="flex gap-3 text-sm leading-relaxed text-slate-300">
+                  <FaCircleCheck className="mt-1 h-4 w-4 shrink-0 text-mint" />
+                  <span>{detail}</span>
+                </li>
+              ))}
+            </ul>
+
+            {galleryPhotos.length > 0 && (
+              <div className="mt-8">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <p className="font-mono text-xs font-semibold tracking-widest text-slate-500 uppercase">
+                    Documentation review
+                  </p>
+                  {galleryPhotos.length > 1 && (
+                    <span className="font-mono text-[10px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
+                      {activeGalleryIndex + 1} / {galleryPhotos.length}
+                    </span>
+                  )}
+                </div>
+
+                <div className="overflow-hidden rounded-[18px] border border-slate-200 bg-[#edf2f6] p-3 shadow-inner sm:p-4">
+                  <div className="relative flex min-h-[260px] items-center justify-center overflow-hidden rounded-[14px] bg-[#e7edf3]">
+                    <img
+                      src={activeGalleryImage}
+                      alt={`${selectedInternship.company} documentation ${activeGalleryIndex + 1}`}
+                      className="h-[260px] w-full object-cover sm:h-[340px]"
+                    />
+                  </div>
+                </div>
+
+                {visibleGalleryPhotos.length > 0 && (
+                  <div className="mt-5 overflow-x-auto pb-2">
+                    <div className="flex min-w-max gap-4">
+                      {visibleGalleryPhotos.map((photo) => {
+                        const originalIndex = galleryPhotos.findIndex((item) => item === photo)
+                        const isSelected = originalIndex === activeGalleryIndex
+
+                        return (
+                          <button
+                            key={`${selectedInternship.id}-${photo}`}
+                            type="button"
+                            onClick={() => {
+                              const nextIndex = originalIndex >= 0 ? originalIndex : 0
+                              setSelectedGalleryIndexByInternship((current) => ({
+                                ...current,
+                                [selectedInternship.id]: nextIndex,
+                              }))
+                            }}
+                            className={`group relative h-28 w-40 shrink-0 overflow-hidden rounded-xl border transition-all duration-200 ${
+                              isSelected
+                                ? 'border-accent bg-accent/10 shadow-glow'
+                                : 'border-slate-200 bg-white/70 hover:border-accent/50 hover:shadow-glow'
+                            }`}
+                            aria-label={`View documentation ${originalIndex + 1}`}
+                          >
+                            <img
+                              src={photo}
+                              alt={`Documentation ${originalIndex + 1}`}
+                              className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
+                            />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  ) : null
+    )
+  })() : null
 
   const academicModal = selectedAcademicProject ? (
     <div
