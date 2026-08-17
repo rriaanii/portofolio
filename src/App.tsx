@@ -33,17 +33,16 @@ import azureCertificate from './assets/Dicoding/2026-2029/Membangun_Aplikasi_Gen
 import kiroCertificate from './assets/Dicoding/2026-2029/Spec_Driven_Development_dengan_Kiro.pdf'
 import edu1 from './assets/education/1.jpg'
 import edu2 from './assets/education/2.jpg'
-import edu3 from './assets/education/3.jpg'
-import edu4 from './assets/education/4.jpg'
 import edu5 from './assets/education/5.jpg'
 import sanohCover from './assets/sanoh/cover.jpg'
 import sanoh1 from './assets/sanoh/1.jpg'
-import sanoh2 from './assets/sanoh/2.jpg'
 import sanoh3 from './assets/sanoh/3.jpg'
 import sanoh4 from './assets/sanoh/4.jpg'
 import sanoh6 from './assets/sanoh/6.jpg'
 import sanoh9 from './assets/sanoh/9.jpg'
 import sanoh11 from './assets/sanoh/11.jpg'
+import sanohFinanceInvoicePdf from './assets/sanoh/Finance_Invoice.pdf'
+import sanohActivityInternPdf from './assets/sanoh/Activity_intern.pdf'
 import gopayCover from './assets/gopay/cover2.png'
 import bankCover from './assets/bankbanten/cover3.png'
 import asprakCover from './assets/asprak/cover4.png'
@@ -67,7 +66,7 @@ function App() {
 
   const toggleTheme = () => setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
 
-  const educationPhotos = [edu1, edu2, edu3, edu4, edu5]
+  const educationPhotos = [edu1, edu2, edu5]
   const [currentEduSlide, setCurrentEduSlide] = useState(0)
 
   const changeEduSlide = (direction: 'next' | 'prev') => {
@@ -93,24 +92,23 @@ function App() {
   const closeImageModal = () => setIsImageModalOpen(false)
 
   const parseCertificateDate = (dateValue: string) => {
-    const monthMap: Record<string, number> = {
-      Januari: 0,
-      Februari: 1,
-      Maret: 2,
+    const englishMonthMap: Record<string, number> = {
+      January: 0,
+      February: 1,
+      March: 2,
       April: 3,
-      Mei: 4,
-      Juni: 5,
-      Juli: 6,
-      Agustus: 7,
+      May: 4,
+      June: 5,
+      July: 6,
+      August: 7,
       September: 8,
-      Oktober: 9,
+      October: 9,
       November: 10,
-      Desember: 11,
+      December: 11,
       Jan: 0,
       Feb: 1,
       Mar: 2,
       Apr: 3,
-      May: 4,
       Jun: 5,
       Jul: 6,
       Aug: 7,
@@ -120,12 +118,30 @@ function App() {
       Dec: 11,
     }
 
+    const indonesianMonthMap: Record<string, number> = {
+      Januari: 0,
+      Februari: 1,
+      Maret: 2,
+      Mei: 4,
+      Juni: 5,
+      Juli: 6,
+      Agustus: 7,
+      Oktober: 9,
+      November: 10,
+      Desember: 11,
+    }
+
     const normalized = dateValue.trim().replace(/\s+/g, ' ')
+
+    const resolveMonthIndex = (monthName: string) => {
+      const lowercaseName = monthName.trim()
+      return englishMonthMap[lowercaseName] ?? indonesianMonthMap[lowercaseName]
+    }
 
     const monthYearMatch = normalized.match(/^(\w+)\s+(\d{4})$/)
     if (monthYearMatch) {
       const [, monthName, year] = monthYearMatch
-      const monthIndex = monthMap[monthName]
+      const monthIndex = resolveMonthIndex(monthName)
       if (monthIndex !== undefined) {
         return new Date(Number(year), monthIndex, 1).getTime()
       }
@@ -134,7 +150,7 @@ function App() {
     const dayMonthYearMatch = normalized.match(/^(\d{1,2})\s+(\w+)\s+(\d{4})$/)
     if (dayMonthYearMatch) {
       const [, day, monthName, year] = dayMonthYearMatch
-      const monthIndex = monthMap[monthName]
+      const monthIndex = resolveMonthIndex(monthName)
       if (monthIndex !== undefined) {
         return new Date(Number(year), monthIndex, Number(day)).getTime()
       }
@@ -165,9 +181,9 @@ function App() {
     },
     {
       id: 'web',
-      title: 'Belajar Dasar Pemrograman Web',
+      title: 'Basic Web Programming',
       issuer: 'Dicoding Indonesia',
-      date: '05 Februari 2024',
+      date: '05 February 2024',
       highlight: false,
       description:
         'Developed responsive web interfaces using semantic HTML, CSS layout systems, and browser APIs.',
@@ -175,9 +191,9 @@ function App() {
     },
     {
       id: 'sql',
-      title: 'Belajar Dasar Structured Query Language (SQL)',
+      title: 'Basic Structured Query Language (SQL)',
       issuer: 'Dicoding Indonesia',
-      date: '08 Februari 2024',
+      date: '08 February 2024',
       highlight: false,
       description:
         'Learned to manage and query relational databases using basic and advanced SQL commands.',
@@ -185,9 +201,9 @@ function App() {
     },
     {
       id: 'python-procedural',
-      title: 'Belajar Pemrograman Prosedural dengan Python',
+      title: 'Procedural Programming with Python',
       issuer: 'Dicoding Indonesia',
-      date: '10 Februari 2024',
+      date: '10 February 2024',
       highlight: false,
       description:
         'Learned Python procedural programming concepts including functions, loops, conditions, and structured logic.',
@@ -195,9 +211,9 @@ function App() {
     },
     {
       id: 'python-beginner',
-      title: 'Memulai Pemrograman dengan Python',
+      title: 'Getting Started with Python Programming',
       issuer: 'Dicoding Indonesia',
-      date: '09 Februari 2024',
+      date: '09 February 2024',
       highlight: false,
       description:
         'Started with Python fundamentals such as variables, control flow, and basic coding problem solving.',
@@ -205,9 +221,9 @@ function App() {
     },
     {
       id: 'ai',
-      title: 'Belajar Dasar AI',
+      title: 'Introduction to AI',
       issuer: 'Dicoding Indonesia',
-      date: '03 Oktober 2024',
+      date: '03 October 2024',
       highlight: false,
       description:
         'Learned the fundamentals of artificial intelligence, practical AI workflows, and responsible AI implementation.',
@@ -215,9 +231,9 @@ function App() {
     },
     {
       id: 'data-science',
-      title: 'Belajar Dasar Data Science',
+      title: 'Introduction to Data Science',
       issuer: 'Dicoding Indonesia',
-      date: '04 Februari 2024',
+      date: '04 February 2024',
       highlight: false,
       description:
         'Explored the core principles of data science, analysis techniques, and insight-driven decision making.',
@@ -225,9 +241,9 @@ function App() {
     },
     {
       id: 'project-management',
-      title: 'Belajar Dasar Manajemen Proyek',
+      title: 'Introduction to Project Management',
       issuer: 'Dicoding Indonesia',
-      date: '18 Januari 2024',
+      date: '18 January 2024',
       highlight: false,
       description:
         'Studied project lifecycle planning, risk handling, and stakeholder coordination for effective delivery.',
@@ -235,9 +251,9 @@ function App() {
     },
     {
       id: 'javascript',
-      title: 'Belajar Dasar Pemrograman JavaScript',
+      title: 'Basic JavaScript Programming',
       issuer: 'Dicoding Indonesia',
-      date: '06 Februari 2024',
+      date: '06 February 2024',
       highlight: false,
       description:
         'Built stronger JavaScript foundations, from syntax and logic to functional programming basics.',
@@ -245,9 +261,9 @@ function App() {
     },
     {
       id: 'aws-cloud',
-      title: 'Cloud Practitioner Essentials (Belajar Dasar AWS Cloud)',
+      title: 'Cloud Practitioner Essentials',
       issuer: 'Amazon Web Services Training',
-      date: '04 Oktober 2024',
+      date: '04 October 2024',
       highlight: false,
       description:
         'Covered AWS core cloud concepts, shared responsibility model, and foundational cloud architecture practices.',
@@ -255,9 +271,9 @@ function App() {
     },
     {
       id: 'fabric',
-      title: 'Belajar Penerapan Data Science dengan Microsoft Fabric',
+      title: 'Applied Data Science with Microsoft Fabric',
       issuer: 'Dicoding Indonesia',
-      date: '16 Juli 2026',
+      date: '16 July 2026',
       highlight: false,
       description:
         'Applied data science workflows using Microsoft Fabric for analysis, data pipelines, and end-to-end solution design.',
@@ -265,9 +281,9 @@ function App() {
     },
     {
       id: 'azure-gen-ai',
-      title: 'Membangun Aplikasi Gen AI dengan Microsoft Azure',
+      title: 'Building Gen AI Applications with Microsoft Azure',
       issuer: 'Dicoding Indonesia',
-      date: '16 Juli 2026',
+      date: '16 July 2026',
       highlight: false,
       description:
         'Designed and deployed generative AI application patterns using Azure AI services and cloud-native principles.',
@@ -275,9 +291,9 @@ function App() {
     },
     {
       id: 'kiro',
-      title: 'Spec-Driven Development dengan Kiro',
+      title: 'Spec-Driven Development with Kiro',
       issuer: 'Dicoding Indonesia',
-      date: '15 Juli 2026',
+      date: '15 July 2026',
       highlight: false,
       description:
         'Explored spec-driven workflows for building cleaner, more consistent software requirements and system outputs.',
@@ -303,7 +319,6 @@ function App() {
       image: sanohCover,
       photos: [
         sanoh1,
-        sanoh2,
         sanoh3,
         sanoh4,
         sanoh6,
@@ -332,6 +347,12 @@ function App() {
         'Prepared account journals, deposit bills, and savings book account stamps for credit reviews.',
         'Inputted cooperative credit file data systematically into the corporate bank system.',
       ],
+      document: {
+        title: 'Credit Review & Administration Documentation',
+        summary:
+          'Summary of daily operational tasks and administrative support activities during the credit review process.',
+        pdf: projectManagementCertificate,
+      },
     },
     {
       id: 'gopay',
@@ -344,10 +365,33 @@ function App() {
         'Marketed the GoPay brand by increasing awareness of GoPay facilities/services among student peers.',
         'Developed a GoPay Strategy by helping to design and develop GoPay marketing plans based on an analysis of needs and constraints experienced by students.',
       ],
+      document: {
+        title: 'GoPay Student Ambassador Strategy',
+        summary:
+          'Campaign material and planning document for digital engagement initiatives and content strategy execution.',
+        pdf: webCertificate,
+      },
     },
   ]
 
   const [selectedInternship, setSelectedInternship] = useState<(typeof internshipData)[number] | null>(null)
+
+  const sanohDocumentation = [
+    {
+      title: 'All Project Report',
+      summary:
+        'Digitized and streamlined workflows to improve process clarity and operational efficiency.',
+      pdf: sanohFinanceInvoicePdf,
+      accent: 'bg-accent/15 text-accent-light',
+    },
+    {
+      title: 'Intern Activity Report',
+      summary:
+        'Documented internship activities, responsibilities, and daily project involvement throughout the program.',
+      pdf: sanohActivityInternPdf,
+      accent: 'bg-coral/15 text-coral',
+    },
+  ]
 
   const academicProjectData = [
     {
@@ -361,6 +405,12 @@ function App() {
         'Assisted lecturers in class practicum environments.',
         'Explained complex technical materials and helped students understand network architecture concepts thoroughly.',
       ],
+      document: {
+        title: 'Teaching Assistant Documentation',
+        summary:
+          'Reference document for practicum support, technical explanations, and class coordination activities.',
+        pdf: aiCertificate,
+      },
     },
     {
       id: 'community-service',
@@ -373,6 +423,12 @@ function App() {
         'Researched and analyzed the target audience and tourism potential of Keseneng Village, Semarang.',
         'Designed a user-friendly and informative web layout to boost local village tourism.',
       ],
+      document: {
+        title: 'Village Tourism Promotion Website Documentation',
+        summary:
+          'Design and concept documentation for a tourism promotion website created for the local community initiative.',
+        pdf: javascriptCertificate,
+      },
     },
   ]
 
@@ -502,7 +558,76 @@ function App() {
               ))}
             </ul>
 
-            {galleryPhotos.length > 0 && (
+            {selectedInternship.id === 'sanoh' ? (
+              <div className="mt-8">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <p className="font-mono text-xs font-semibold tracking-widest text-slate-500 uppercase">
+                    Documentation
+                  </p>
+                  <span className="rounded-full border border-accent/20 bg-accent/10 px-2 py-1 text-[0.6rem] font-semibold tracking-[0.18em] text-accent-light uppercase">
+                    PDF
+                  </span>
+                </div>
+
+                <div className="grid gap-4 lg:grid-cols-2">
+                  {sanohDocumentation.map((item) => (
+                    <div key={item.title} className="overflow-hidden rounded-2xl border border-white/10 bg-ink-800/80">
+                      <div className="flex items-center justify-between border-b border-white/10 bg-ink-900/70 px-4 py-3">
+                        <p className="font-mono text-[0.6rem] font-semibold tracking-[0.18em] text-accent-soft uppercase">
+                          Document
+                        </p>
+                        <span
+                          className={`inline-flex rounded-full px-2 py-1 font-mono text-[0.55rem] font-semibold tracking-[0.14em] uppercase ${item.accent}`}
+                        >
+                          PDF
+                        </span>
+                      </div>
+
+                      <iframe src={item.pdf} title={item.title} className="h-72 w-full border-0 bg-white" />
+
+                      <div className="p-4">
+                        <h4 className="font-display text-lg font-bold text-white">{item.title}</h4>
+                        <p className="mt-2 text-sm leading-relaxed text-slate-400">{item.summary}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : selectedInternship.document ? (
+              <div className="mt-8">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <p className="font-mono text-xs font-semibold tracking-widest text-slate-500 uppercase">
+                    Documentation
+                  </p>
+                  <span className="rounded-full border border-accent/20 bg-accent/10 px-2 py-1 text-[0.6rem] font-semibold tracking-[0.18em] text-accent-light uppercase">
+                    PDF
+                  </span>
+                </div>
+
+                <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink-800/80">
+                  <div className="flex items-center justify-between border-b border-white/10 bg-ink-900/70 px-4 py-3">
+                    <p className="font-mono text-[0.6rem] font-semibold tracking-[0.18em] text-accent-soft uppercase">
+                      Project document
+                    </p>
+                  </div>
+
+                  <iframe
+                    src={selectedInternship.document.pdf}
+                    title={selectedInternship.document.title}
+                    className="h-64 w-full border-0 bg-white sm:h-80"
+                  />
+
+                  <div className="p-4">
+                    <h4 className="font-display text-lg font-bold text-white">
+                      {selectedInternship.document.title}
+                    </h4>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                      {selectedInternship.document.summary}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : galleryPhotos.length > 0 ? (
               <div className="mt-8">
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <p className="font-mono text-xs font-semibold tracking-widest text-slate-500 uppercase">
@@ -527,7 +652,7 @@ function App() {
                   </div>
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
@@ -587,6 +712,42 @@ function App() {
               </li>
             ))}
           </ul>
+
+          {selectedAcademicProject.document ? (
+            <div className="mt-8">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <p className="font-mono text-xs font-semibold tracking-widest text-slate-500 uppercase">
+                  Documentation
+                </p>
+                <span className="rounded-full border border-accent/20 bg-accent/10 px-2 py-1 text-[0.6rem] font-semibold tracking-[0.18em] text-accent-light uppercase">
+                  PDF
+                </span>
+              </div>
+
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink-800/80">
+                <div className="flex items-center justify-between border-b border-white/10 bg-ink-900/70 px-4 py-3">
+                  <p className="font-mono text-[0.6rem] font-semibold tracking-[0.18em] text-accent-soft uppercase">
+                    Project document
+                  </p>
+                </div>
+
+                <iframe
+                  src={selectedAcademicProject.document.pdf}
+                  title={selectedAcademicProject.document.title}
+                  className="h-64 w-full border-0 bg-white sm:h-80"
+                />
+
+                <div className="p-4">
+                  <h4 className="font-display text-lg font-bold text-white">
+                    {selectedAcademicProject.document.title}
+                  </h4>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    {selectedAcademicProject.document.summary}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
@@ -891,7 +1052,7 @@ function App() {
               </p>
             </div>
             <div className="mt-6 flex flex-wrap items-center gap-2">
-              {['React.js', 'Next.js', 'TypeScript', 'System Analysis', 'SDLC', 'Agile / Waterfall'].map((tech) => (
+              {['React.js', 'Next.js', 'TypeScript', 'System Analysis', 'SDLC', 'Agile / Waterfall', 'Digitalizing'].map((tech) => (
                 <span
                   key={tech}
                   className="rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-xs font-semibold text-accent-light"
