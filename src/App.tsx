@@ -13,6 +13,7 @@ import {
   FaLayerGroup,
   FaArrowRight,
   FaCircleCheck,
+  FaFilePdf,
   FaMoon,
   FaSun,
 } from 'react-icons/fa6'
@@ -55,6 +56,7 @@ import abdimasPdf from './assets/abdimas/Pengabdian_Masyarakat.pdf'
 function App() {
   const [profileImg] = useState<string>(myPicture)
   const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window === 'undefined') return 'dark'
@@ -69,6 +71,28 @@ function App() {
   }, [theme])
 
   const toggleTheme = () => setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+
+  // Close the mobile menu automatically when the viewport grows to desktop size.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const handleResize = () => {
+      if (window.matchMedia('(min-width: 768px)').matches) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [isMobileMenuOpen])
+
+  // Close the mobile menu with the Escape key.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMobileMenuOpen(false)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isMobileMenuOpen])
 
   const educationPhotos = [edu1, edu2, edu5]
   const [currentEduSlide, setCurrentEduSlide] = useState(0)
@@ -438,6 +462,23 @@ function App() {
 
   const [selectedAcademicProject, setSelectedAcademicProject] = useState<(typeof academicProjectData)[number] | null>(null)
 
+  // Prevent background scrolling while the mobile menu or any modal is open.
+  const isAnyOverlayOpen =
+    isMobileMenuOpen ||
+    isImageModalOpen ||
+    selectedInternship !== null ||
+    selectedAcademicProject !== null ||
+    selectedCertificate !== null
+
+  useEffect(() => {
+    if (!isAnyOverlayOpen) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [isAnyOverlayOpen])
+
   const educationProjects = [
     {
       date: 'Feb 2024 - June 2024',
@@ -592,6 +633,15 @@ function App() {
                       <div className="p-4">
                         <h4 className="font-display text-lg font-bold text-white">{item.title}</h4>
                         <p className="mt-2 text-sm leading-relaxed text-slate-400">{item.summary}</p>
+                        <a
+                          href={item.pdf}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-semibold text-accent-light transition-colors hover:bg-accent hover:text-white"
+                        >
+                          Open PDF
+                          <FaArrowRight className="h-3.5 w-3.5" />
+                        </a>
                       </div>
                     </div>
                   ))}
@@ -628,6 +678,15 @@ function App() {
                     <p className="mt-2 text-sm leading-relaxed text-slate-400">
                       {selectedInternship.document.summary}
                     </p>
+                    <a
+                      href={selectedInternship.document.pdf}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-semibold text-accent-light transition-colors hover:bg-accent hover:text-white"
+                    >
+                      Open PDF
+                      <FaArrowRight className="h-3.5 w-3.5" />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -748,6 +807,15 @@ function App() {
                   <p className="mt-2 text-sm leading-relaxed text-slate-400">
                     {selectedAcademicProject.document.summary}
                   </p>
+                  <a
+                    href={selectedAcademicProject.document.pdf}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-semibold text-accent-light transition-colors hover:bg-accent hover:text-white"
+                  >
+                    Open PDF
+                    <FaArrowRight className="h-3.5 w-3.5" />
+                  </a>
                 </div>
               </div>
             </div>
@@ -775,14 +843,27 @@ function App() {
         </button>
 
         {selectedCertificate.pdf ? (
-          <div className="overflow-hidden rounded-xl border border-white/10 bg-white">
-            <iframe
-              src={selectedCertificate.pdf}
-              title={selectedCertificate.title}
-              className="h-[75vh] w-full bg-white"
-              loading="lazy"
-            />
-          </div>
+          <>
+            <div className="overflow-hidden rounded-xl border border-white/10 bg-white">
+              <iframe
+                src={selectedCertificate.pdf}
+                title={selectedCertificate.title}
+                className="h-[60vh] w-full bg-white sm:h-[75vh]"
+                loading="lazy"
+              />
+            </div>
+            <div className="px-3 pt-4 sm:px-4">
+              <a
+                href={selectedCertificate.pdf}
+                target="_blank"
+                rel="noreferrer"
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-4 py-2.5 text-sm font-semibold text-accent-light transition-colors hover:bg-accent hover:text-white"
+              >
+                Open PDF Certificate
+                <FaArrowRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
+          </>
         ) : (
           <img
             src={selectedCertificate.image}
@@ -822,9 +903,15 @@ function App() {
               <iframe
                 src={certificate.pdf}
                 title={certificate.title}
-                className="pointer-events-none h-full w-full"
+                className="pointer-events-none hidden h-full w-full sm:block"
                 loading="lazy"
               />
+              <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-ink-800 to-ink-900 sm:hidden">
+                <FaFilePdf className="h-10 w-10 text-coral/80" />
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-[0.6rem] font-semibold tracking-[0.18em] text-accent-light uppercase">
+                  PDF Document
+                </span>
+              </div>
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent" />
               <span className="absolute top-3 left-3 rounded-full border border-white/10 bg-ink-950/80 px-2 py-1 font-mono text-[0.6rem] font-semibold tracking-[0.18em] text-accent-light uppercase backdrop-blur-sm">
                 PDF
@@ -893,7 +980,7 @@ function App() {
   )
 
   return (
-    <div className="min-h-screen bg-ink-950 font-sans text-slate-300 antialiased">
+    <div className="min-h-screen overflow-x-hidden bg-ink-950 font-sans text-slate-300 antialiased">
       {/* Decorative background */}
       <div className="pointer-events-none fixed inset-0 z-0">
         <div className="absolute inset-0 bg-grid-pattern bg-[size:48px_48px] opacity-40" />
@@ -951,20 +1038,101 @@ function App() {
             Hire Me
           </a>
 
-          {/* Mobile menu button placeholder — simple anchor for now */}
-          <a
-            href="#about"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-slate-300 md:hidden"
-            aria-label="Menu"
+          {/* Mobile menu toggle button */}
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-slate-300 transition-colors hover:border-accent/40 hover:text-white md:hidden"
           >
-            <span className="flex flex-col gap-1">
-              <span className="block h-0.5 w-4 bg-current" />
-              <span className="block h-0.5 w-4 bg-current" />
-              <span className="block h-0.5 w-4 bg-current" />
-            </span>
-          </a>
+            {isMobileMenuOpen ? (
+              <FaXmark className="h-4.5 w-4.5" />
+            ) : (
+              <span className="flex flex-col gap-1">
+                <span className="block h-0.5 w-4 rounded-full bg-current" />
+                <span className="block h-0.5 w-4 rounded-full bg-current" />
+                <span className="block h-0.5 w-4 rounded-full bg-current" />
+              </span>
+            )}
+          </button>
         </div>
       </nav>
+
+      {/* ==================== MOBILE MENU DRAWER ==================== */}
+      <div
+        id="mobile-menu"
+        className={`fixed inset-0 z-40 md:hidden ${isMobileMenuOpen ? '' : 'pointer-events-none'}`}
+        aria-hidden={!isMobileMenuOpen}
+        inert={!isMobileMenuOpen}
+      >
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+            isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+
+        {/* Drawer panel */}
+        <aside
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+          className={`absolute top-16 right-0 bottom-0 flex w-[82%] max-w-xs flex-col border-l border-white/10 bg-ink-900 shadow-glow-lg transition-transform duration-300 ease-out ${
+            isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <div className="flex items-center justify-between border-b border-white/5 px-6 py-5">
+            <span className="font-display text-base font-bold tracking-tight text-white">
+              Maulika<span className="text-accent-soft">.</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-label="Close navigation menu"
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-slate-300 transition-colors hover:border-accent/40 hover:text-white"
+            >
+              <FaXmark className="h-4 w-4" />
+            </button>
+          </div>
+
+          <nav className="flex-1 overflow-y-auto px-3 py-4">
+            <ul className="space-y-1">
+              {[
+                ['About', '#about'],
+                ['Education', '#education'],
+                ['Internships', '#internships'],
+                ['Experience', '#experience'],
+                ['Certificates', '#licenses'],
+                ['Skills', '#skills'],
+              ].map(([label, href]) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="group flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-accent/10 hover:text-white"
+                  >
+                    {label}
+                    <FaArrowRight className="h-3 w-3 text-accent-soft transition-transform group-hover:translate-x-1" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="border-t border-white/5 p-4">
+            <a
+              href="mailto:maulikafitriani@gmail.com"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex w-full items-center justify-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm font-semibold text-accent-light transition-colors hover:bg-accent hover:text-white"
+            >
+              Hire Me
+            </a>
+          </div>
+        </aside>
+      </div>
 
       {/* ==================== HERO / ABOUT ==================== */}
       <section id="about" className="relative z-10 px-4 pt-32 pb-16 sm:px-6 lg:px-8">
@@ -1311,7 +1479,7 @@ function App() {
                 </span>
                 Languages
               </h3>
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {[
                   ['Indonesian', 'text-[#dc2626]'],
                   ['English', 'text-[#2563eb]'],
@@ -1340,7 +1508,7 @@ function App() {
                 </span>
                 Soft Skills
               </h3>
-              <div className="grid grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
                 {[
                   ['Leadership', 'text-gold'],
                   ['Communication', 'text-accent-soft'],
