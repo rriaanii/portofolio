@@ -618,7 +618,7 @@ function App() {
                   <iframe
                     src={selectedInternship.document.pdf}
                     title={selectedInternship.document.title}
-                    className="h-[55vh] w-full border-0 bg-white sm:h-[60vh]"
+                    className="h-64 w-full border-0 bg-white sm:h-80"
                   />
 
                   <div className="p-4">
@@ -738,7 +738,7 @@ function App() {
                 <iframe
                   src={selectedAcademicProject.document.pdf}
                   title={selectedAcademicProject.document.title}
-                  className="h-[55vh] w-full border-0 bg-white sm:h-[60vh]"
+                  className="h-64 w-full border-0 bg-white sm:h-80"
                 />
 
                 <div className="p-4">
@@ -763,7 +763,7 @@ function App() {
       onClick={() => setSelectedCertificate(null)}
     >
       <div
-        className="relative w-full max-w-3xl animate-scale-in rounded-2xl border border-white/10 bg-ink-900 p-3 shadow-glow-lg"
+        className="relative w-full max-w-5xl animate-scale-in rounded-2xl border border-white/10 bg-ink-900 p-3 shadow-glow-lg"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -779,7 +779,7 @@ function App() {
             <iframe
               src={selectedCertificate.pdf}
               title={selectedCertificate.title}
-              className="h-[68vh] w-full bg-white"
+              className="h-[75vh] w-full bg-white"
               loading="lazy"
             />
           </div>
