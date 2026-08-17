@@ -44,9 +44,13 @@ import sanoh11 from './assets/sanoh/11.jpg'
 import sanohFinanceInvoicePdf from './assets/sanoh/Finance_Invoice.pdf'
 import sanohActivityInternPdf from './assets/sanoh/Activity_intern.pdf'
 import gopayCover from './assets/gopay/cover2.png'
+import gopayInternPdf from './assets/gopay/Gopay_Ambassador23.pdf'
 import bankCover from './assets/bankbanten/cover3.png'
+import bankInternPdf from './assets/bankbanten/Bank_Banten_PKL.pdf'
 import asprakCover from './assets/asprak/cover4.png'
+import asprakPdf from './assets/asprak/Asprak_Arsijarkom.pdf'
 import abdimasCover from './assets/abdimas/cover5.png'
+import abdimasPdf from './assets/abdimas/Pengabdian_Masyarakat.pdf'
 
 function App() {
   const [profileImg] = useState<string>(myPicture)
@@ -351,7 +355,7 @@ function App() {
         title: 'Credit Review & Administration Documentation',
         summary:
           'Summary of daily operational tasks and administrative support activities during the credit review process.',
-        pdf: projectManagementCertificate,
+        pdf: bankInternPdf,
       },
     },
     {
@@ -369,7 +373,7 @@ function App() {
         title: 'GoPay Student Ambassador Strategy',
         summary:
           'Campaign material and planning document for digital engagement initiatives and content strategy execution.',
-        pdf: webCertificate,
+        pdf: gopayInternPdf,
       },
     },
   ]
@@ -409,7 +413,7 @@ function App() {
         title: 'Teaching Assistant Documentation',
         summary:
           'Reference document for practicum support, technical explanations, and class coordination activities.',
-        pdf: aiCertificate,
+        pdf: asprakPdf,
       },
     },
     {
@@ -427,7 +431,7 @@ function App() {
         title: 'Village Tourism Promotion Website Documentation',
         summary:
           'Design and concept documentation for a tourism promotion website created for the local community initiative.',
-        pdf: javascriptCertificate,
+        pdf: abdimasPdf,
       },
     },
   ]
@@ -614,7 +618,7 @@ function App() {
                   <iframe
                     src={selectedInternship.document.pdf}
                     title={selectedInternship.document.title}
-                    className="h-64 w-full border-0 bg-white sm:h-80"
+                    className="h-[55vh] w-full border-0 bg-white sm:h-[60vh]"
                   />
 
                   <div className="p-4">
@@ -734,7 +738,7 @@ function App() {
                 <iframe
                   src={selectedAcademicProject.document.pdf}
                   title={selectedAcademicProject.document.title}
-                  className="h-64 w-full border-0 bg-white sm:h-80"
+                  className="h-[55vh] w-full border-0 bg-white sm:h-[60vh]"
                 />
 
                 <div className="p-4">
@@ -759,7 +763,7 @@ function App() {
       onClick={() => setSelectedCertificate(null)}
     >
       <div
-        className="relative w-full max-w-5xl animate-scale-in rounded-2xl border border-white/10 bg-ink-900 p-3 shadow-glow-lg"
+        className="relative w-full max-w-3xl animate-scale-in rounded-2xl border border-white/10 bg-ink-900 p-3 shadow-glow-lg"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -775,7 +779,7 @@ function App() {
             <iframe
               src={selectedCertificate.pdf}
               title={selectedCertificate.title}
-              className="h-[75vh] w-full bg-white"
+              className="h-[68vh] w-full bg-white"
               loading="lazy"
             />
           </div>
