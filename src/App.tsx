@@ -17,6 +17,37 @@ import {
   FaSun,
 } from 'react-icons/fa6'
 import myPicture from './assets/picturefix.png'
+import bnspCertificate from './assets/sertifikat/bnsp.png'
+import tenarisCertificate from './assets/sertifikat/tenaris.png'
+import aiCertificate from './assets/Dicoding/2024-2027/Belajar_Dasar_AI.pdf'
+import dataScienceCertificate from './assets/Dicoding/2024-2027/Belajar_Dasar_Data_Science.pdf'
+import projectManagementCertificate from './assets/Dicoding/2024-2027/Belajar_Dasar_Manajemen_Proyek.pdf'
+import javascriptCertificate from './assets/Dicoding/2024-2027/Belajar_Dasar_Pemrograman_JavaScript.pdf'
+import webCertificate from './assets/Dicoding/2024-2027/Belajar_Dasar_Pemrograman_Web.pdf'
+import sqlCertificate from './assets/Dicoding/2024-2027/Belajar_Dasar_Structured_Query_Language.pdf'
+import pythonProceduralCertificate from './assets/Dicoding/2024-2027/Belajar_Pemrograman_Prosedural_dengan_Python.pdf'
+import pythonBeginnerCertificate from './assets/Dicoding/2024-2027/Memulai_Pemrograman_dengan_Python.pdf'
+import cloudCertificate from './assets/Dicoding/2024-2027/Cloud_Practitioner_Essentials.pdf'
+import fabricCertificate from './assets/Dicoding/2026-2029/Belajar_Penerapan_Data_Science_dengan_Microsoft_Fabric.pdf'
+import azureCertificate from './assets/Dicoding/2026-2029/Membangun_Aplikasi_Gen_AI_dengan Microsoft_Azure.pdf'
+import kiroCertificate from './assets/Dicoding/2026-2029/Spec_Driven_Development_dengan_Kiro.pdf'
+import edu1 from './assets/education/1.jpg'
+import edu2 from './assets/education/2.jpg'
+import edu3 from './assets/education/3.jpg'
+import edu4 from './assets/education/4.jpg'
+import edu5 from './assets/education/5.jpg'
+import sanohCover from './assets/sanoh/cover.jpg'
+import sanoh1 from './assets/sanoh/1.jpg'
+import sanoh2 from './assets/sanoh/2.jpg'
+import sanoh3 from './assets/sanoh/3.jpg'
+import sanoh4 from './assets/sanoh/4.jpg'
+import sanoh6 from './assets/sanoh/6.jpg'
+import sanoh9 from './assets/sanoh/9.jpg'
+import sanoh11 from './assets/sanoh/11.jpg'
+import gopayCover from './assets/gopay/cover2.png'
+import bankCover from './assets/bankbanten/cover3.png'
+import asprakCover from './assets/asprak/cover4.png'
+import abdimasCover from './assets/abdimas/cover5.png'
 
 function App() {
   const [profileImg] = useState<string>(myPicture)
@@ -36,7 +67,7 @@ function App() {
 
   const toggleTheme = () => setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
 
-  const educationPhotos = ['/wisuda.jpg', '/wisuda2.png']
+  const educationPhotos = [edu1, edu2, edu3, edu4, edu5]
   const [currentEduSlide, setCurrentEduSlide] = useState(0)
 
   const changeEduSlide = (direction: 'next' | 'prev') => {
@@ -61,6 +92,57 @@ function App() {
   const openImageModal = () => setIsImageModalOpen(true)
   const closeImageModal = () => setIsImageModalOpen(false)
 
+  const parseCertificateDate = (dateValue: string) => {
+    const monthMap: Record<string, number> = {
+      Januari: 0,
+      Februari: 1,
+      Maret: 2,
+      April: 3,
+      Mei: 4,
+      Juni: 5,
+      Juli: 6,
+      Agustus: 7,
+      September: 8,
+      Oktober: 9,
+      November: 10,
+      Desember: 11,
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
+    }
+
+    const normalized = dateValue.trim().replace(/\s+/g, ' ')
+
+    const monthYearMatch = normalized.match(/^(\w+)\s+(\d{4})$/)
+    if (monthYearMatch) {
+      const [, monthName, year] = monthYearMatch
+      const monthIndex = monthMap[monthName]
+      if (monthIndex !== undefined) {
+        return new Date(Number(year), monthIndex, 1).getTime()
+      }
+    }
+
+    const dayMonthYearMatch = normalized.match(/^(\d{1,2})\s+(\w+)\s+(\d{4})$/)
+    if (dayMonthYearMatch) {
+      const [, day, monthName, year] = dayMonthYearMatch
+      const monthIndex = monthMap[monthName]
+      if (monthIndex !== undefined) {
+        return new Date(Number(year), monthIndex, Number(day)).getTime()
+      }
+    }
+
+    return 0
+  }
+
   const certificateData = [
     {
       id: 'bnsp',
@@ -70,7 +152,7 @@ function App() {
       highlight: true,
       description:
         'Completed certification in network and infrastructure competencies, including network design and configuration.',
-      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
+      image: bnspCertificate,
     },
     {
       id: 'merit',
@@ -79,129 +161,133 @@ function App() {
       date: 'March 2021',
       highlight: true,
       description: 'Received full Merit Award for outstanding and consistent academic excellence.',
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+      image: tenarisCertificate,
     },
     {
-      id: 'project-management',
-      title: 'Project Management',
-      issuer: 'Dicoding Indonesia X Google Developers',
-      date: '18 Jan 2024',
+      id: 'web',
+      title: 'Belajar Dasar Pemrograman Web',
+      issuer: 'Dicoding Indonesia',
+      date: '05 Februari 2024',
       highlight: false,
       description:
-        'Learned project management fundamentals, including cycles, methodology, and organizational structures.',
-      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
-    },
-    {
-      id: 'data-science',
-      title: 'Data Science Competency',
-      issuer: 'Dicoding Indonesia X Google Developers',
-      date: '4 Feb 2024',
-      highlight: false,
-      description:
-        'Studied the basics of data science, data analysis, machine learning, and essential data tools.',
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
-    },
-    {
-      id: 'web-layouts',
-      title: 'Web Programming Layouts',
-      issuer: 'Dicoding X DBS Foundation Coding Camp',
-      date: '5 Feb 2024',
-      highlight: false,
-      description:
-        'Created final assignments applying semantic HTML techniques and highly responsive web layouts using CSS.',
-      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80',
+        'Developed responsive web interfaces using semantic HTML, CSS layout systems, and browser APIs.',
+      pdf: webCertificate,
     },
     {
       id: 'sql',
-      title: 'Structured Query Language (SQL)',
-      issuer: 'Dicoding Indonesia X Google Developers',
-      date: '8 Feb 2024',
+      title: 'Belajar Dasar Structured Query Language (SQL)',
+      issuer: 'Dicoding Indonesia',
+      date: '08 Februari 2024',
       highlight: false,
       description:
         'Learned to manage and query relational databases using basic and advanced SQL commands.',
-      image: 'https://images.unsplash.com/photo-1558494949cc5c4f48a4d0d9c9b8c95eb?auto=format&fit=crop&w=900&q=80',
+      pdf: sqlCertificate,
     },
     {
-      id: 'responsive-design',
-      title: 'Responsive Web Design',
-      issuer: 'freeCodeCamp',
-      date: '12 Mar 2024',
-      highlight: false,
-      description:
-        'Built responsive, mobile-first web layouts using modern CSS, Flexbox, and Grid systems.',
-      image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=900&q=80',
-    },
-    {
-      id: 'ux-design',
-      title: 'Belajar Dasar UX Design',
+      id: 'python-procedural',
+      title: 'Belajar Pemrograman Prosedural dengan Python',
       issuer: 'Dicoding Indonesia',
-      date: '22 Mar 2024',
+      date: '10 Februari 2024',
       highlight: false,
       description:
-        'Studied the UX design workflow from user research and empathy maps to wireframes and prototyping.',
-      image: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=900&q=80',
+        'Learned Python procedural programming concepts including functions, loops, conditions, and structured logic.',
+      pdf: pythonProceduralCertificate,
     },
     {
-      id: 'python',
-      title: 'Python Programming Essentials',
+      id: 'python-beginner',
+      title: 'Memulai Pemrograman dengan Python',
       issuer: 'Dicoding Indonesia',
-      date: '5 Apr 2024',
+      date: '09 Februari 2024',
       highlight: false,
       description:
-        'Practiced Python fundamentals, including data structures, functions, and basic automation scripts.',
-      image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=900&q=80',
+        'Started with Python fundamentals such as variables, control flow, and basic coding problem solving.',
+      pdf: pythonBeginnerCertificate,
     },
     {
-      id: 'scrum',
-      title: 'Professional Scrum Master I',
-      issuer: 'Scrum.org',
-      date: '18 May 2024',
+      id: 'ai',
+      title: 'Belajar Dasar AI',
+      issuer: 'Dicoding Indonesia',
+      date: '03 Oktober 2024',
       highlight: false,
       description:
-        'Applied the Scrum framework, sprint planning, and agile ceremonies to manage team delivery.',
-      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80',
+        'Learned the fundamentals of artificial intelligence, practical AI workflows, and responsible AI implementation.',
+      pdf: aiCertificate,
     },
     {
-      id: 'google-analytics',
-      title: 'Google Analytics for Beginners',
-      issuer: 'Google Analytics Academy',
-      date: '2 Jun 2024',
+      id: 'data-science',
+      title: 'Belajar Dasar Data Science',
+      issuer: 'Dicoding Indonesia',
+      date: '04 Februari 2024',
       highlight: false,
       description:
-        'Learned to measure website traffic and user behavior to support data-driven business decisions.',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80',
+        'Explored the core principles of data science, analysis techniques, and insight-driven decision making.',
+      pdf: dataScienceCertificate,
     },
     {
-      id: 'db-design',
-      title: 'Database Design & Modeling',
-      issuer: 'Udemy',
-      date: '14 Jul 2024',
+      id: 'project-management',
+      title: 'Belajar Dasar Manajemen Proyek',
+      issuer: 'Dicoding Indonesia',
+      date: '18 Januari 2024',
       highlight: false,
       description:
-        'Designed normalized relational schemas and applied entity-relationship modeling for real-world cases.',
-      image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=900&q=80',
+        'Studied project lifecycle planning, risk handling, and stakeholder coordination for effective delivery.',
+      pdf: projectManagementCertificate,
     },
     {
-      id: 'figma',
-      title: 'UI Design with Figma',
-      issuer: 'Coursera',
-      date: '9 Aug 2024',
+      id: 'javascript',
+      title: 'Belajar Dasar Pemrograman JavaScript',
+      issuer: 'Dicoding Indonesia',
+      date: '06 Februari 2024',
       highlight: false,
       description:
-        'Created high-fidelity UI mockups and interactive prototypes using design systems in Figma.',
-      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=900&q=80',
+        'Built stronger JavaScript foundations, from syntax and logic to functional programming basics.',
+      pdf: javascriptCertificate,
     },
     {
-      id: 'toefl',
-      title: 'TOEFL ITP Certification',
-      issuer: 'IIEF',
-      date: '23 Aug 2024',
+      id: 'aws-cloud',
+      title: 'Cloud Practitioner Essentials (Belajar Dasar AWS Cloud)',
+      issuer: 'Amazon Web Services Training',
+      date: '04 Oktober 2024',
       highlight: false,
       description:
-        'Demonstrated English proficiency in listening, structure, and written expression.',
-      image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80',
+        'Covered AWS core cloud concepts, shared responsibility model, and foundational cloud architecture practices.',
+      pdf: cloudCertificate,
+    },
+    {
+      id: 'fabric',
+      title: 'Belajar Penerapan Data Science dengan Microsoft Fabric',
+      issuer: 'Dicoding Indonesia',
+      date: '16 Juli 2026',
+      highlight: false,
+      description:
+        'Applied data science workflows using Microsoft Fabric for analysis, data pipelines, and end-to-end solution design.',
+      pdf: fabricCertificate,
+    },
+    {
+      id: 'azure-gen-ai',
+      title: 'Membangun Aplikasi Gen AI dengan Microsoft Azure',
+      issuer: 'Dicoding Indonesia',
+      date: '16 Juli 2026',
+      highlight: false,
+      description:
+        'Designed and deployed generative AI application patterns using Azure AI services and cloud-native principles.',
+      pdf: azureCertificate,
+    },
+    {
+      id: 'kiro',
+      title: 'Spec-Driven Development dengan Kiro',
+      issuer: 'Dicoding Indonesia',
+      date: '15 Juli 2026',
+      highlight: false,
+      description:
+        'Explored spec-driven workflows for building cleaner, more consistent software requirements and system outputs.',
+      pdf: kiroCertificate,
     },
   ]
+
+  const sortedCertificateData = [...certificateData].sort(
+    (a, b) => parseCertificateDate(b.date) - parseCertificateDate(a.date),
+  )
 
   const [selectedCertificate, setSelectedCertificate] = useState<
     (typeof certificateData)[number] | null
@@ -214,12 +300,15 @@ function App() {
       role: 'Business & System Analyst and Frontend Developer Intern',
       date: 'July 2024 – July 2025',
       location: 'Cikarang, Indonesia',
-      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
+      image: sanohCover,
       photos: [
-        'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+        sanoh1,
+        sanoh2,
+        sanoh3,
+        sanoh4,
+        sanoh6,
+        sanoh9,
+        sanoh11,
       ],
       details: [
         'Finance Invoice Management Systems: Collaborated within the BA and Frontend teams to digitize and streamline corporate finance invoicing workflows.',
@@ -228,24 +317,12 @@ function App() {
       ],
     },
     {
-      id: 'gopay',
-      company: 'GoPay Indonesia',
-      role: "Student Ambassador '23 - Content Creator",
-      date: 'Sept 2023 - Dec 2023',
-      location: 'Remote / Campus Engagement',
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
-      details: [
-        'Marketed the GoPay brand by increasing awareness of GoPay facilities/services among student peers.',
-        'Developed a GoPay Strategy by helping to design and develop GoPay marketing plans based on an analysis of needs and constraints experienced by students.',
-      ],
-    },
-    {
       id: 'bank-banten',
       company: 'PT Bank Pembangunan Daerah Banten Tbk',
       role: 'Loan Assistant Intern',
       date: 'Oct 2019 - Dec 2019',
       location: 'Banten, Indonesia',
-      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
+      image: bankCover,
       photos: [
         'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80',
         'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80',
@@ -256,10 +333,21 @@ function App() {
         'Inputted cooperative credit file data systematically into the corporate bank system.',
       ],
     },
+    {
+      id: 'gopay',
+      company: 'GoPay Indonesia',
+      role: "Student Ambassador '23 - Content Creator",
+      date: 'Sept 2023 - Dec 2023',
+      location: 'Remote / Campus Engagement',
+      image: gopayCover,
+      details: [
+        'Marketed the GoPay brand by increasing awareness of GoPay facilities/services among student peers.',
+        'Developed a GoPay Strategy by helping to design and develop GoPay marketing plans based on an analysis of needs and constraints experienced by students.',
+      ],
+    },
   ]
 
   const [selectedInternship, setSelectedInternship] = useState<(typeof internshipData)[number] | null>(null)
-  const [selectedGalleryIndexByInternship, setSelectedGalleryIndexByInternship] = useState<Record<string, number>>({})
 
   const academicProjectData = [
     {
@@ -267,8 +355,8 @@ function App() {
       title: 'Teaching Assistant Network Architecture',
       subtitle: 'Class Practice Assistant Coordinator',
       date: 'March 2023 - May 2024',
-      location: 'Telkom University',
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
+      location: 'FIT, Telkom University',
+      image: asprakCover,
       details: [
         'Assisted lecturers in class practicum environments.',
         'Explained complex technical materials and helped students understand network architecture concepts thoroughly.',
@@ -276,11 +364,11 @@ function App() {
     },
     {
       id: 'community-service',
-      title: 'Pengabdian Masyarakat (Community Service)',
+      title: 'Web User Interface Developer',
       subtitle: 'Tourism Promotion Website Design Team',
       date: 'Nov 2023 - Dec 2023',
       location: 'Keseneng Village, Semarang',
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+      image: abdimasCover,
       details: [
         'Researched and analyzed the target audience and tourism potential of Keseneng Village, Semarang.',
         'Designed a user-friendly and informative web layout to boost local village tourism.',
@@ -359,9 +447,6 @@ function App() {
 
   const internshipModal = selectedInternship ? (() => {
     const galleryPhotos = selectedInternship.photos ?? []
-    const activeGalleryIndex = selectedGalleryIndexByInternship[selectedInternship.id] ?? 0
-    const activeGalleryImage = galleryPhotos[activeGalleryIndex] ?? selectedInternship.image
-    const visibleGalleryPhotos = galleryPhotos.filter((_, index) => index !== activeGalleryIndex)
 
     return (
       <div
@@ -421,61 +506,26 @@ function App() {
               <div className="mt-8">
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <p className="font-mono text-xs font-semibold tracking-widest text-slate-500 uppercase">
-                    Documentation review
+                    Documentation
                   </p>
-                  {galleryPhotos.length > 1 && (
-                    <span className="font-mono text-[10px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
-                      {activeGalleryIndex + 1} / {galleryPhotos.length}
-                    </span>
-                  )}
                 </div>
 
-                <div className="overflow-hidden rounded-[18px] border border-slate-200 bg-[#edf2f6] p-3 shadow-inner sm:p-4">
-                  <div className="relative flex min-h-[260px] items-center justify-center overflow-hidden rounded-[14px] bg-[#e7edf3]">
-                    <img
-                      src={activeGalleryImage}
-                      alt={`${selectedInternship.company} documentation ${activeGalleryIndex + 1}`}
-                      className="h-[260px] w-full object-cover sm:h-[340px]"
-                    />
+                <div className="overflow-x-auto pb-2">
+                  <div className="flex min-w-max gap-4">
+                    {galleryPhotos.map((photo, index) => (
+                      <div
+                        key={`${selectedInternship.id}-${index}`}
+                        className="h-40 w-64 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-[#edf2f6] shadow-inner sm:h-48 sm:w-72"
+                      >
+                        <img
+                          src={photo}
+                          alt={`${selectedInternship.company} documentation ${index + 1}`}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
-
-                {visibleGalleryPhotos.length > 0 && (
-                  <div className="mt-5 overflow-x-auto pb-2">
-                    <div className="flex min-w-max gap-4">
-                      {visibleGalleryPhotos.map((photo) => {
-                        const originalIndex = galleryPhotos.findIndex((item) => item === photo)
-                        const isSelected = originalIndex === activeGalleryIndex
-
-                        return (
-                          <button
-                            key={`${selectedInternship.id}-${photo}`}
-                            type="button"
-                            onClick={() => {
-                              const nextIndex = originalIndex >= 0 ? originalIndex : 0
-                              setSelectedGalleryIndexByInternship((current) => ({
-                                ...current,
-                                [selectedInternship.id]: nextIndex,
-                              }))
-                            }}
-                            className={`group relative h-28 w-40 shrink-0 overflow-hidden rounded-xl border transition-all duration-200 ${
-                              isSelected
-                                ? 'border-accent bg-accent/10 shadow-glow'
-                                : 'border-slate-200 bg-white/70 hover:border-accent/50 hover:shadow-glow'
-                            }`}
-                            aria-label={`View documentation ${originalIndex + 1}`}
-                          >
-                            <img
-                              src={photo}
-                              alt={`Documentation ${originalIndex + 1}`}
-                              className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
-                            />
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </div>
@@ -548,7 +598,7 @@ function App() {
       onClick={() => setSelectedCertificate(null)}
     >
       <div
-        className="relative w-full max-w-4xl animate-scale-in rounded-2xl border border-white/10 bg-ink-900 p-3 shadow-glow-lg"
+        className="relative w-full max-w-5xl animate-scale-in rounded-2xl border border-white/10 bg-ink-900 p-3 shadow-glow-lg"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -558,11 +608,24 @@ function App() {
         >
           <FaXmark className="h-5 w-5" />
         </button>
-        <img
-          src={selectedCertificate.image}
-          alt={selectedCertificate.title}
-          className="max-h-[70vh] w-full rounded-xl object-contain"
-        />
+
+        {selectedCertificate.pdf ? (
+          <div className="overflow-hidden rounded-xl border border-white/10 bg-white">
+            <iframe
+              src={selectedCertificate.pdf}
+              title={selectedCertificate.title}
+              className="h-[75vh] w-full bg-white"
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <img
+            src={selectedCertificate.image}
+            alt={selectedCertificate.title}
+            className="max-h-[75vh] w-full rounded-xl object-contain"
+          />
+        )}
+
         <div className="p-4 text-center">
           <h3 className="font-display text-lg font-bold text-white">
             {selectedCertificate.title}
@@ -589,30 +652,27 @@ function App() {
           onClick={() => setSelectedCertificate(certificate)}
           aria-label={`View ${certificate.title}`}
         >
-          <img
-            src={certificate.image}
-            alt={certificate.title}
-            className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
+          {certificate.pdf ? (
+            <div className="relative h-48 w-full overflow-hidden bg-[#0f172a]">
+              <iframe
+                src={certificate.pdf}
+                title={certificate.title}
+                className="pointer-events-none h-full w-full"
+                loading="lazy"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent" />
+              <span className="absolute top-3 left-3 rounded-full border border-white/10 bg-ink-950/80 px-2 py-1 font-mono text-[0.6rem] font-semibold tracking-[0.18em] text-accent-light uppercase backdrop-blur-sm">
+                PDF
+              </span>
+            </div>
+          ) : (
+            <img
+              src={certificate.image}
+              alt={certificate.title}
+              className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          )}
         </button>
-
-        <button
-          type="button"
-          className="absolute top-1/2 left-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-[#fff] opacity-70 backdrop-blur-sm transition hover:bg-accent hover:opacity-100"
-          aria-label="Previous certificate"
-        >
-          <FaChevronLeft className="h-3.5 w-3.5" />
-        </button>
-        <button
-          type="button"
-          className="absolute top-1/2 right-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-[#fff] opacity-70 backdrop-blur-sm transition hover:bg-accent hover:opacity-100"
-          aria-label="Next certificate"
-        >
-          <FaChevronRight className="h-3.5 w-3.5" />
-        </button>
-        <span className="absolute right-3 bottom-3 rounded-full bg-black/60 px-2.5 py-1 font-mono text-xs font-semibold text-[#fff] backdrop-blur-sm">
-          3/3
-        </span>
       </div>
 
       <div className="flex flex-1 flex-col p-5">
@@ -1049,7 +1109,7 @@ function App() {
             {/* Highlighted Certificates */}
             <div>
               <div className="mx-auto mb-6 grid max-w-3xl gap-6 sm:grid-cols-2">
-                {certificateData.filter((certificate) => certificate.highlight).map((certificate) =>
+                {sortedCertificateData.filter((certificate) => certificate.highlight).map((certificate) =>
                   certCard(certificate, true),
                 )}
               </div>
@@ -1063,7 +1123,7 @@ function App() {
                 <span className="h-px w-12 bg-white/10" />
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {certificateData.filter((certificate) => !certificate.highlight).map((certificate) =>
+                {sortedCertificateData.filter((certificate) => !certificate.highlight).map((certificate) =>
                   certCard(certificate, false),
                 )}
               </div>
